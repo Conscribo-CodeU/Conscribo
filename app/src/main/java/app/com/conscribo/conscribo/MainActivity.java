@@ -1,9 +1,11 @@
 package app.com.conscribo.conscribo;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.parse.Parse;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -12,6 +14,17 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Parse.enableLocalDatastore(this);
+
+        Parse.initialize(this, "z4QO1lQCmgjdEpwOEoR9oEXD7hS1O74IFjViof37", "rUGcNQi5Vu622hBn6Ft845H5Ghj6JObB3nj5z18v");
+
+        /** Test if Parse Object can be stored
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();
+
+         */
     }
 
 

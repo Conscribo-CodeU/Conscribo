@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 22
@@ -25,4 +26,6 @@ dependencies {
     compile 'com.parse.bolts:bolts-android:1.+'
     compile fileTree(include: 'Parse-*.jar', dir: 'libs')
     compile files('libs/Parse-1.9.4.jar')
+    compile 'com.google.android.gms:play-services-auth:7.5.0'
 }
+

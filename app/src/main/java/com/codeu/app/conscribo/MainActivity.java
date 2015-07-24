@@ -66,6 +66,11 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.C
         if (v.getId() == R.id.sign_in_button) {
             onSignInClicked();
         }
+/* TO-DO
+        if (view.getId() == R.id.sign_out_button) {
+            onSignOutClicked();
+        }
+        */
     }
 
     private void onSignInClicked() {
@@ -76,6 +81,17 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.C
 
         // Show a message to the user that we are signing in.
         //mStatusTextView.setText(R.string.signing_in);
+    }
+
+    private void onSignOutClicked() {
+        // Clear the default account so that GoogleApiClient will not automatically
+        // connect in the future.
+        if (mGoogleApiClient.isConnected()) {
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            mGoogleApiClient.disconnect();
+        }
+
+        //showSignedOutUI();
     }
 
     @Override

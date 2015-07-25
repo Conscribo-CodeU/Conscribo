@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
@@ -80,7 +81,8 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.C
         mGoogleApiClient.connect();
 
         // Show a message to the user that we are signing in.
-        //mStatusTextView.setText(R.string.signing_in);
+        TextView mStatusTextView = (TextView) findViewById(R.id.signInTextView);
+        mStatusTextView.setText("Signing in...");
     }
 
     private void onSignOutClicked() {

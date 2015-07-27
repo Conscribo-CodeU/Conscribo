@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.parse.Parse;
 import com.parse.ParseObject;
@@ -17,6 +19,8 @@ public class MainDashboard extends ActionBarActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final MainDashboard self = this;
+
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
 
@@ -25,6 +29,14 @@ public class MainDashboard extends ActionBarActivity  {
         ParseObject testObject = new ParseObject("TestObject");
         testObject.put("otherfoo", "bar");
         testObject.saveInBackground();
+
+        Button tempStoryMode = (Button) findViewById(R.id.button5);
+        tempStoryMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(self, StoryMode.class));
+            }
+        });
 
     }
 

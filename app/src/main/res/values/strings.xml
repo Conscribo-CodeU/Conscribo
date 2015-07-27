@@ -12,6 +12,7 @@
 
     <string name="pref_mock2">Mock Preference 2</string>
     <string name="pref_key_mock2">mock-pref-2</string>
+    <string name="title_activity_story_mode">StoryMode</string>
 
 
 

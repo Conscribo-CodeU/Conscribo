@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Conscribo</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_help">HelpActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preferences Strings -->
+    <string name="pref_mock1">Mock Preference 1</string>
+    <string name="pref_key_mock1">mock-pref-1</string>
+
+    <string name="pref_mock2">Mock Preference 2</string>
+    <string name="pref_key_mock2">mock-pref-2</string>
+    <string name="title_activity_story_mode">StoryMode</string>
+
+
+
+</resources>

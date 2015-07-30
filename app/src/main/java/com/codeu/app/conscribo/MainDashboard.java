@@ -10,6 +10,9 @@ import android.widget.Button;
 
 import com.parse.Parse;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
+
+import java.util.ArrayList;
 
 
 public class MainDashboard extends ActionBarActivity  {
@@ -21,16 +24,64 @@ public class MainDashboard extends ActionBarActivity  {
 
         final MainDashboard self = this;
 
+        // Enable automaticUser so users don't need to login
+        ParseUser.enableAutomaticUser();
+
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
+        Parse.initialize(this, "z4QO1lQCmgjdEpwOEoR9oEXD7hS1O74IFjViof37",
+                "rUGcNQi5Vu622hBn6Ft845H5Ghj6JObB3nj5z18v");
 
-        Parse.initialize(this, "z4QO1lQCmgjdEpwOEoR9oEXD7hS1O74IFjViof37", "rUGcNQi5Vu622hBn6Ft845H5Ghj6JObB3nj5z18v");
+        // Mock user input for creating a new story
+        String genre = "scifi";
+        String sentence = "In a galaxy far far away, there was a hero.";
+        String author = "Jeff";
+        String title = "Galactic Wars";
 
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("otherfoo", "bar");
-        testObject.saveInBackground();
+        ArrayList<String> story = new ArrayList<String>();
+        story.add(sentence);
+        ArrayList<String> authors = new ArrayList<String>();
+        authors.add(author);
 
-        Button tempStoryMode = (Button) findViewById(R.id.button5);
+
+
+        // Create a ParseObject Sentence
+        ParseObject sentenceObject = new ParseObject("Sentence");
+        sentenceObject.put("author", author);
+        sentenceObject.put("level", 0);
+        sentenceObject.put("sentence", sentence);
+
+        sentenceObject.saveInBackground();
+
+
+        // Create a ParseObject StoryTree and add columns
+        ParseObject storyTree = new ParseObject("StoryTree");
+        storyTree.put("genre", genre);
+        storyTree.put("creator", author);
+        storyTree.put("title", title);
+
+
+        // Create the ParseObject StoryObject and add columns
+        ParseObject storyObject = new ParseObject("StoryObject");
+        storyObject.put("title", title);
+        storyObject.addAll("listSentences", story);
+        storyObject.addAll("listAuthors", authors);
+        storyObject.put("genre", genre);
+        storyObject.put("likes", 0);
+
+        // Add relations to all the ParseObjects
+        sentenceObject.put("story", storyObject);
+        sentenceObject.put("tree", storyTree);
+
+        storyTree.put("rootSentence", sentenceObject);
+
+        storyObject.put("tree", storyTree);
+        storyObject.put("lastSentence", sentenceObject);
+
+
+        // This should save all relational ParseObjects like storyObject and storyTree
+
+        Button tempStoryMode = (Button) findViewById(R.id.story_mode_button);
         tempStoryMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,6 +89,13 @@ public class MainDashboard extends ActionBarActivity  {
             }
         });
 
+        Button tempCreateStoryButton = (Button) findViewById(R.id.create_story_button);
+        tempCreateStoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent (self, CreateStoryActivity.class));
+            }
+        });
     }
 
 

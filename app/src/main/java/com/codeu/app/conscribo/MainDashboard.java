@@ -8,12 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.parse.Parse;
-import com.parse.ParseObject;
-import com.parse.ParseUser;
-
-import java.util.ArrayList;
-
 
 public class MainDashboard extends ActionBarActivity  {
 
@@ -24,62 +18,45 @@ public class MainDashboard extends ActionBarActivity  {
 
         final MainDashboard self = this;
 
-        // Enable automaticUser so users don't need to login
-        ParseUser.enableAutomaticUser();
-
-        // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "z4QO1lQCmgjdEpwOEoR9oEXD7hS1O74IFjViof37",
-                "rUGcNQi5Vu622hBn6Ft845H5Ghj6JObB3nj5z18v");
+        /*
+        ParseUser user = ParseUser.getCurrentUser();
+        ParseRelation<ParseObject> relation = user.getRelation("likes");
+        relation.add(post);
+        user.saveInBackground();
+        */
 
         // Mock user input for creating a new story
         String genre = "scifi";
         String sentence = "In a galaxy far far away, there was a hero.";
         String author = "Jeff";
-        String title = "Galactic Wars";
+        String title = "Galactic Wars" +((int) (Math.random() * 1000));
 
-        ArrayList<String> story = new ArrayList<String>();
-        story.add(sentence);
-        ArrayList<String> authors = new ArrayList<String>();
-        authors.add(author);
-
-
-
-        // Create a ParseObject Sentence
-        ParseObject sentenceObject = new ParseObject("Sentence");
-        sentenceObject.put("author", author);
-        sentenceObject.put("level", 0);
-        sentenceObject.put("sentence", sentence);
-
-        sentenceObject.saveInBackground();
-
-
+        /*
         // Create a ParseObject StoryTree and add columns
         ParseObject storyTree = new ParseObject("StoryTree");
         storyTree.put("genre", genre);
         storyTree.put("creator", author);
         storyTree.put("title", title);
 
-
         // Create the ParseObject StoryObject and add columns
         ParseObject storyObject = new ParseObject("StoryObject");
         storyObject.put("title", title);
-        storyObject.addAll("listSentences", story);
-        storyObject.addAll("listAuthors", authors);
+        storyObject.add("listAuthors", author);
+        storyObject.add("listSentences", sentence);
         storyObject.put("genre", genre);
+        storyObject.put("depth", 0);
         storyObject.put("likes", 0);
 
-        // Add relations to all the ParseObjects
-        sentenceObject.put("story", storyObject);
-        sentenceObject.put("tree", storyTree);
 
-        storyTree.put("rootSentence", sentenceObject);
-
+        // Give pointer to storyObject to point to its tree
         storyObject.put("tree", storyTree);
-        storyObject.put("lastSentence", sentenceObject);
+
+        // Save both in background
+//        storyObject.saveInBackground();
 
 
-        // This should save all relational ParseObjects like storyObject and storyTree
+
+        */
 
         Button tempStoryMode = (Button) findViewById(R.id.story_mode_button);
         tempStoryMode.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +65,7 @@ public class MainDashboard extends ActionBarActivity  {
                 startActivity(new Intent(self, StoryMode.class));
             }
         });
+
 
         Button tempCreateStoryButton = (Button) findViewById(R.id.create_story_button);
         tempCreateStoryButton.setOnClickListener(new View.OnClickListener() {

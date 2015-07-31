@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 public class MainDashboard extends ActionBarActivity  {
@@ -18,46 +19,6 @@ public class MainDashboard extends ActionBarActivity  {
 
         final MainDashboard self = this;
 
-        /*
-        ParseUser user = ParseUser.getCurrentUser();
-        ParseRelation<ParseObject> relation = user.getRelation("likes");
-        relation.add(post);
-        user.saveInBackground();
-        */
-
-        // Mock user input for creating a new story
-        String genre = "scifi";
-        String sentence = "In a galaxy far far away, there was a hero.";
-        String author = "Jeff";
-        String title = "Galactic Wars" +((int) (Math.random() * 1000));
-
-        /*
-        // Create a ParseObject StoryTree and add columns
-        ParseObject storyTree = new ParseObject("StoryTree");
-        storyTree.put("genre", genre);
-        storyTree.put("creator", author);
-        storyTree.put("title", title);
-
-        // Create the ParseObject StoryObject and add columns
-        ParseObject storyObject = new ParseObject("StoryObject");
-        storyObject.put("title", title);
-        storyObject.add("listAuthors", author);
-        storyObject.add("listSentences", sentence);
-        storyObject.put("genre", genre);
-        storyObject.put("depth", 0);
-        storyObject.put("likes", 0);
-
-
-        // Give pointer to storyObject to point to its tree
-        storyObject.put("tree", storyTree);
-
-        // Save both in background
-//        storyObject.saveInBackground();
-
-
-
-        */
-
         Button tempStoryMode = (Button) findViewById(R.id.story_mode_button);
         tempStoryMode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +27,6 @@ public class MainDashboard extends ActionBarActivity  {
             }
         });
 
-
         Button tempCreateStoryButton = (Button) findViewById(R.id.create_story_button);
         tempCreateStoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +34,11 @@ public class MainDashboard extends ActionBarActivity  {
                 startActivity(new Intent (self, CreateStoryActivity.class));
             }
         });
+
+        // Check if StoryTree was created and display Toast
+        if(getIntent().getFlags() == Application.STORYTREE_CREATED){
+            Toast.makeText(this, "Your Story Tree has been created", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

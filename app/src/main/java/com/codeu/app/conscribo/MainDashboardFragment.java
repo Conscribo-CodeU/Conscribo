@@ -13,6 +13,8 @@ import android.widget.ListView;
  */
 public class MainDashboardFragment extends Fragment {
 
+    ListView mListView;
+
     public MainDashboardFragment() {
     }
 
@@ -20,7 +22,7 @@ public class MainDashboardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        ListView mainListView = (ListView) getActivity().findViewById(R.id.listview_main);
+        mListView = (ListView) getActivity().findViewById(R.id.listview_main);
 
 
         // Query Story Objects from Parse from descending order by dateUpdated

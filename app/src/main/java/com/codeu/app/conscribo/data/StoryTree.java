@@ -3,18 +3,18 @@ package com.codeu.app.conscribo.data;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 
 import java.util.Date;
 
 /**
  * Created by jeff on 7/30/15.
+ *
  * Members of StoryTree {
  *     "objectId":      String
  *     "title":         String
  *     "genre":         String
  *     "creator":       String
- *     "priorityQueueStoryList": Relation< StoryObject>
+ *     <REMOVED> "priorityQueueStoryList": Relation< StoryObject> </REMOVED>
  *     "createdAt":     Date
  *     "updatedAt":     Date
  * }
@@ -39,11 +39,6 @@ public class StoryTree extends ParseObject {
     public void setCreator(String value) {
         put("creator", value);
     }
-    public void setStoryObject(ParseObject storyObject) {
-        ParseRelation<ParseObject> relation = getRelation("priorityQueueStoryList");
-        relation.add(storyObject);
-    }
-
 
     // Getters
     public String getTitle() {

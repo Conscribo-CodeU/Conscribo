@@ -11,20 +11,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="Start a new Tree"
+        android:text="@string/create_story_tree_button"
         android:id="@+id/create_story_button"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Click for Story Mode"
-        android:id="@+id/story_mode_button"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:gravity="center_horizontal"
+        android:text="@string/random_story_button"
+        android:id="@+id/story_mode_button" />
 
     <ListView
         android:id="@+id/listview_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

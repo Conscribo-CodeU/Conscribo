@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +17,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codeu.app.conscribo.data.StoryObject;
 import com.codeu.app.conscribo.data.StoryTree;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 
 public class CreateStoryActivity extends ActionBarActivity implements AdapterView.OnItemSelectedListener {
@@ -31,8 +37,7 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
     final private int NULL_SENTENCE = 5;
     final private int INVALID_SENTENCE = 6;
 
-    private String mGenreSelected;
-
+    private String mGenreSelectedStr;
     private EditText mCreatorEditText;
     private EditText mTitleEditText;
     private EditText mSentenceEditText;
@@ -119,74 +124,71 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
                     // Create StoryTree
                     StoryTree tree = new StoryTree();
                     tree.makeStoryTree(mTitleEditText.getText().toString(),
-                            mGenreSelected,
+                            mGenreSelectedStr,
                             mCreatorEditText.getText().toString());
-                    /*
-                    tree.saveInBackground(new SaveCallback() {
 
+                    // Create StoryObject
+                    StoryObject story = new StoryObject();
+                    story.makeStoryObject(mTitleEditText.getText().toString(),
+                            mGenreSelectedStr,
+                            mCreatorEditText.getText().toString(),
+                            mCreatorEditText.getText().toString());
+                    story.setTree(tree);
+
+
+
+                    // Save the StoryObject and the StoryTree.
+                    // ***NOTE: Saving the StoryObject will save both.
+                    story.saveInBackground();
+
+                    // Test to see if you can query a StoryObject based on its tree
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("StoryObject");
+                    query.getFirstInBackground(new GetCallback<ParseObject>() {
                         @Override
-                        public void done(ParseException e) {
+                        public void done(ParseObject parseObject, com.parse.ParseException e) {
+                            if (parseObject == null) {
+                                Log.d("StoryObject", "The getFirst request failed.");
+                            } else {
 
-                            // Query the tree object after it has been saved
-                            ParseQuery<ParseObject> query = ParseQuery.getQuery("StoryTree");
-                            query.whereEqualTo("title", mTitleEditText.getText().toString());
+                                Log.d("StoryObject", "Retrieved the object.");
+                                Log.d("The title is: ", parseObject.getString("title"));
 
-                            query.getFirstInBackground(new GetCallback<ParseObject>() {
-                                public void done(ParseObject object, ParseException e) {
+                                StoryObject tempStory = (StoryObject) parseObject;
 
-                                    if (object == null) {
-                                        Log.d("score", "The getFirst request failed.");
-                                    } else {
-                                        Log.d("score", "Retrieved the object.");
 
-                                        // Create StoryObject
-                                        StoryObject story = new StoryObject();
-                                        story.makeStoryObject(mTitleEditText.getText().toString(),
-                                                mGenreSelected,
-                                                mSentenceEditText.getText().toString(),
-                                                mCreatorEditText.getText().toString());
-                                        story.setTree(object);
 
-                                        ParseRelation<ParseObject> relation =
-                                                object.getRelation("priorityQueueStoryList");
-                                        relation.add(story);
-
-                                        object.saveInBackground();
-
+                                // get tree and query based on that
+                                ParseQuery<ParseObject> queryStoryTree =
+                                        ParseQuery.getQuery("StoryObject");
+                                queryStoryTree.whereEqualTo("tree", tempStory.getTree());
+                                queryStoryTree.getFirstInBackground(new GetCallback<ParseObject>() {
+                                    @Override
+                                    public void done(ParseObject parseObject, ParseException e) {
+                                       if(parseObject == null) {
+                                           Log.d("SearchStoryTreeQ","FAILED");
+                                       } else {
+                                           Log.d("SearchStoryTreeQ", "SUCCESS");
+                                           Log.d("The title is: ", parseObject.getString("title"));
+                                       }
                                     }
-                                }
-                            });
+                                });
 
 
+
+
+
+
+                            }
                         }
-                    }); */
+                    });
 
 
-//                    story.setTree(tree);
 
+                    // Go back to MainDashboard with Intent of STORYTREE_CREATED
+                    Intent intent = new Intent(getApplicationContext(), MainDashboard.class);
+                    intent.setFlags(Application.STORYTREE_CREATED);
 
-//                    ParseRelation<ParseObject> relation = tree.getRelation("priorityQueueStoryList");
-//                    relation.add(story);
-
-                    // First save story and tree in background.
-                    /*story.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            finish();
-                        }
-                    });*/
-
-
-                    /*
-                    tree.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            finish();
-                        }
-                    });*/
-
-                    // Go back to MainDashboard
-                    startActivity(new Intent(getApplicationContext(), MainDashboard.class));
+                    startActivity(intent);
                 }
             }
         });
@@ -209,8 +211,8 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
         }
 
         // Check if genre was selected
-//                Log.e(LOGTAG, mGenreSelected);
-        if(mGenreSelected == null) {
+//                Log.e(LOGTAG, mGenreSelectedStr);
+        if(mGenreSelectedStr == null) {
             displaySubmissionErrorToast(NULL_GENRE);
             return false;
         }
@@ -229,7 +231,7 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
     public void onItemSelected(AdapterView<?> parent, View view,
                                int position, long id) {
 
-        mGenreSelected = getResources()
+        mGenreSelectedStr = getResources()
                 .obtainTypedArray(R.array.genre_options_array).getString(position);
 
         switch(position){
@@ -265,19 +267,19 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
         String submissionError;
         switch(errorCode) {
             case SHORT_CREATOR:
-                submissionError = "Creator's name must be more than 4 characters";
+                submissionError = "Creator's name must be at least 4 characters";
                 break;
             case SHORT_TITLE:
-                submissionError = "Title must be more than 0 characters";
+                submissionError = "Please title your Story Tree";
                 break;
             case NULL_GENRE:
-                submissionError = "Please select a Genre";
+                submissionError = "Please select a genre";
                 break;
             case INVALID_SENTENCE:
                 submissionError = "Please finish your sentence";
                 break;
             default:
-                submissionError = "Submission Error";
+                submissionError = "Submission error!";
         }
 
         Toast.makeText(getApplicationContext(), submissionError, Toast.LENGTH_SHORT).show();

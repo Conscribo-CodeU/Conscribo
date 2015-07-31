@@ -10,6 +10,7 @@ import java.util.Date;
 
 /**
  * Created by jeff on 7/30/15.
+ *
  * Members of StoryObject {
  *     "objectId":      String
  *     "title":         String
@@ -27,7 +28,7 @@ import java.util.Date;
 @ParseClassName("StoryObject")
 public class StoryObject extends ParseObject {
 
-    public void makeStoryObject(String title, String genre, String sentence, String author) {
+    public void makeStoryObject(String title, String genre, String author, String sentence) {
         setTitle(title);
         setGenre(genre);
         addSentence(sentence);
@@ -84,8 +85,8 @@ public class StoryObject extends ParseObject {
     public String getID() {
         return getString("objectId");
     }
-    public StoryTree getTree() {
-        return (StoryTree) getParseObject("tree");
+    public ParseObject getTree() {
+        return getParseObject("tree");
     }
     public JSONArray getSentencesJSONArray() {
         return getJSONArray("listSentences");

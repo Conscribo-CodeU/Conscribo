@@ -31,9 +31,18 @@
 
     <string name="action_example">Example action</string>
 
+    <!-- Main Dashboard -->
+    <string name="create_story_tree_button">Create new Story Tree</string>
+    <string name="random_story_button">Read Random Story</string>
+
 
     <!-- Main Story List Item -->
-    
+
+
+
+    <!-- Temp List Item -->
+
+
     
     <!-- Create Story -->
     <array name="genre_options_array">

@@ -1,6 +1,5 @@
 package com.codeu.app.conscribo;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
@@ -121,6 +120,7 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
 
                 // Check if the submission is valid and then Create Parse Object and save
                 if(isValidStorySubmission()) {
+
                     // Create StoryTree
                     StoryTree tree = new StoryTree();
                     tree.makeStoryTree(mTitleEditText.getText().toString(),
@@ -132,7 +132,7 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
                     story.makeStoryObject(mTitleEditText.getText().toString(),
                             mGenreSelectedStr,
                             mCreatorEditText.getText().toString(),
-                            mCreatorEditText.getText().toString());
+                            mSentenceEditText.getText().toString());
                     story.setTree(tree);
 
 
@@ -156,7 +156,6 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
                                 StoryObject tempStory = (StoryObject) parseObject;
 
 
-
                                 // get tree and query based on that
                                 ParseQuery<ParseObject> queryStoryTree =
                                         ParseQuery.getQuery("StoryObject");
@@ -164,31 +163,26 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
                                 queryStoryTree.getFirstInBackground(new GetCallback<ParseObject>() {
                                     @Override
                                     public void done(ParseObject parseObject, ParseException e) {
-                                       if(parseObject == null) {
-                                           Log.d("SearchStoryTreeQ","FAILED");
-                                       } else {
-                                           Log.d("SearchStoryTreeQ", "SUCCESS");
-                                           Log.d("The title is: ", parseObject.getString("title"));
-                                       }
+                                        if (parseObject == null) {
+                                            Log.d("SearchStoryTreeQ", "FAILED");
+                                        } else {
+                                            Log.d("SearchStoryTreeQ", "SUCCESS");
+                                            Log.d("The title is: ", parseObject.getString("title"));
+                                        }
                                     }
                                 });
-
-
-
-
 
 
                             }
                         }
                     });
 
-
-
-                    // Go back to MainDashboard with Intent of STORYTREE_CREATED
-                    Intent intent = new Intent(getApplicationContext(), MainDashboard.class);
-                    intent.setFlags(Application.STORYTREE_CREATED);
-
-                    startActivity(intent);
+                    // Show toast confirmation. Finish activity and go back to MainDashboard
+                    Toast.makeText(getApplicationContext(),
+                            "Your Story Tree has been created",
+                            Toast.LENGTH_SHORT)
+                            .show();
+                    finish();
                 }
             }
         });

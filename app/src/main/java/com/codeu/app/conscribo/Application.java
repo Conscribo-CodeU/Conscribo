@@ -18,7 +18,7 @@ public class Application extends android.app.Application {
     final static public int WESTERN = 7;
     final static public int OTHER =   8;
 
-    final static public int STORYTREE_CREATED = 1000;
+    final static public int MAIN_DASHBOARDS_MAX_POSTS = 20;
 
     public Application() {
     }

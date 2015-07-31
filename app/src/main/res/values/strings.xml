@@ -37,10 +37,8 @@
 
 
     <!-- Main Story List Item -->
+    <string name="list_story_image_description">This is a picture of the story.</string>
 
-
-
-    <!-- Temp List Item -->
 
 
     
@@ -56,6 +54,7 @@
         <item>Western</item>
         <item>Other</item>
     </array>
+
     <string name="character_count">0 characters</string>
     <string name="create_story">CreateStory</string>
     <string name="title_activity_create_story">CreateStoryActivity</string>

@@ -47,9 +47,6 @@ public class StoryTree extends ParseObject {
     public String getGenre() {
         return getString("genre");
     }
-    public String getID() {
-        return getString("objectId");
-    }
     public String getCreator() {
         return getString("creator");
     }

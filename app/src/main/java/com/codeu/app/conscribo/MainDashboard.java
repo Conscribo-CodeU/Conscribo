@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,24 +14,24 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codeu.app.conscribo.data.StoryObject;
 import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.util.List;
 
 
 public class MainDashboard extends ActionBarActivity {
 
-    ListView mListView;
+    private ListView mListView;
 
-    ParseQueryAdapter<StoryObject> mParseQueryAdapter;
+    private ParseQueryAdapter<StoryObject> mParseQueryAdapter;
 
-    Activity self;
+    private StoryObject mSelectedStory;
+
+    private Activity self;
 
     final private String LOGTAG = MainDashboard.class.getName();
 
@@ -39,6 +40,7 @@ public class MainDashboard extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mSelectedStory = null;
 
         /*
         // Query Test
@@ -71,17 +73,29 @@ public class MainDashboard extends ActionBarActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView< ?> parent, View view, int position, long id) {
 
-                final StoryObject item = mParseQueryAdapter.getItem(position);
+                mSelectedStory = mParseQueryAdapter.getItem(position);
             }
         });
 
-        // Set up buttons
-        Button tempStoryModeButton = (Button) findViewById(R.id.story_mode_button);
-        tempStoryModeButton.setOnClickListener(new View.OnClickListener() {
+        // Set up temporary buttons
+        Button tempReadStoryButton = (Button) findViewById(R.id.read_story_button);
+        tempReadStoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(self, StoryMode.class));
+                // Place story name in extra of Intent and send to activity
+                if(mSelectedStory != null) {
+
+                    Intent i = new Intent(self, ReadWriteStoryActivity.class);
+                    i.putExtra("selectedStoryId", mSelectedStory.getObjectId());
+                    Log.e(LOGTAG, mSelectedStory.getObjectId());
+                    startActivity(i);
+                } else {
+                    // Tell user to select a story first
+                    Toast.makeText(getApplicationContext(),
+                            "Please select a story",
+                            Toast.LENGTH_SHORT ).show();
+                }
             }
         });
 
@@ -90,6 +104,15 @@ public class MainDashboard extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(self, CreateStoryActivity.class));
+            }
+        });
+
+        Button tempDiscoverButton = (Button) findViewById(R.id.discover_button);
+        tempDiscoverButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Query random story and send intent to ReadWriteStoryActivity
+
             }
         });
 
@@ -107,12 +130,11 @@ public class MainDashboard extends ActionBarActivity {
                     public ParseQuery<StoryObject> create() {
 
                         ParseQuery<StoryObject> query = StoryObject.getQuery();
-                        query.setLimit(Application.MAIN_DASHBOARDS_MAX_POSTS);
+                        query.setLimit(Application.Constants.MAIN_DASHBOARDS_MAX_POSTS);
                         query.orderByDescending("createdAt");
                         return query;
                     }
                 };
-
 
 
         /*
@@ -125,7 +147,6 @@ public class MainDashboard extends ActionBarActivity {
                     view = View.inflate(getContext(), R.layout.main_story_list_item, null);
                 }
 
-
                 //Find all relevant views
                 TextView titleView = (TextView)     view.findViewById( R.id.list_story_title);
                 TextView authorView = (TextView)    view.findViewById( R.id.list_story_author);
@@ -135,10 +156,10 @@ public class MainDashboard extends ActionBarActivity {
 
                 //  Set the content based on the story
                 titleView.setText(story.getTitle());
-                authorView.setText(getLastAuthorFromJSONArray(story.getAuthorsJSONArray()));
+                authorView.setText( Utility.getLastAuthorFromJSONArray(story.getAuthorsJSONArray()));
                 likesView.setText(Integer.toString(story.getLikes()) +  " likes" );
-                genreImage.setImageResource( findGenreDrawable( story.getGenre() ) );
-                blurb.setText( generateStringFromJSONArray( story.getSentencesJSONArray() ) );
+                genreImage.setImageResource( Utility.findGenreDrawable( story.getGenre() ) );
+                blurb.setText( Utility.generateStringFromJSONArray(story.getSentencesJSONArray()) );
 
                 return view;
             }
@@ -158,54 +179,6 @@ public class MainDashboard extends ActionBarActivity {
         mParseQueryAdapter.setAutoload(false);
         mParseQueryAdapter.setPaginationEnabled(false);
 
-    }
-
-    private int findGenreDrawable(String genre) {
-
-        // Switchcase to match genre and return drawable id
-        switch (genre) {
-            case "Sci Fi":
-                return R.drawable.scifi;
-            case "Fairy Tale":
-                return R.drawable.fairytale;
-            case "Horror":
-                return R.drawable.horror;
-            case "Mystery":
-                return R.drawable.mystery;
-            case "Fantasy":
-                return R.drawable.fantasy;
-            case "Romance":
-                return R.drawable.romance;
-            case "Satire":
-                return R.drawable.satire;
-            case "Western":
-                return R.drawable.western;
-        }
-
-        return R.drawable.other;
-    }
-
-    private String getLastAuthorFromJSONArray(JSONArray array) {
-        String author = "";
-        try {
-            author = array.getString( array.length() - 1);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return author;
-    }
-
-    private String generateStringFromJSONArray(JSONArray array) {
-        String blurb = "";
-        for(int i = 0; i < array.length(); i++) {
-            try {
-                blurb += array.getString(i);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return blurb;
     }
 
     @Override
@@ -247,6 +220,4 @@ public class MainDashboard extends ActionBarActivity {
         super.onResume();
         mParseQueryAdapter.loadObjects();
     }
-
-
 }

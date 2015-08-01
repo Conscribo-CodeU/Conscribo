@@ -34,15 +34,6 @@
         android:prompt="@string/genre"
         android:gravity="center_horizontal"/>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/create_story_sentence_hint"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/create_story_sentence"
-        android:layout_gravity="center_horizontal" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,12 +41,28 @@
         android:text="@string/character_count"
         android:id="@+id/create_story_character_count" />
 
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/create"
-        android:id="@+id/create_story_submit"
-        android:layout_gravity="center_horizontal" />
+        android:orientation="horizontal">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/create_story_sentence_hint"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/create_story_sentence"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create"
+            android:id="@+id/create_story_submit"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
 
 
 </LinearLayout>

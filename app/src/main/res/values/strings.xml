@@ -19,7 +19,7 @@
     <string name="pref_mock2">Mock Preference 2</string>
     <string name="pref_key_mock2">mock-pref-2</string>
 
-    <string name="title_activity_story_mode">StoryMode</string>
+    <string name="title_activity_story_mode">Story view and edit</string>
     <string name="title_activity_parse_login">ParseLoginActivity</string>
 
     <string name="title_section1">Section 1</string>
@@ -32,15 +32,12 @@
     <string name="action_example">Example action</string>
 
     <!-- Main Dashboard -->
-    <string name="create_story_tree_button">Create new Story Tree</string>
-    <string name="random_story_button">Read Random Story</string>
-
+    <string name="create_story_tree_button">Create</string>
+    <string name="discover_button">Discover</string>
+    <string name="read_button">Read</string>
 
     <!-- Main Story List Item -->
     <string name="list_story_image_description">This is a picture of the story.</string>
-
-
-
     
     <!-- Create Story -->
     <array name="genre_options_array">
@@ -54,12 +51,29 @@
         <item>Western</item>
         <item>Other</item>
     </array>
-
     <string name="character_count">0 characters</string>
     <string name="create_story">CreateStory</string>
     <string name="title_activity_create_story">CreateStoryActivity</string>
     <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
     <string name="create">Create</string>
     <string name="create_story_sentence_hint">Write the first sentence of your Story Tree</string>
+
+
+    <!-- Navigation Drawer -->
+    <array name="nav_drawer_options">
+        <item>Main Dashboard</item>
+        <item>My Profile</item>
+        <item>Create</item>
+        <item>Discover</item>
+        <item>Subscriptions</item>
+        <item>Genres</item>
+        <item>Support</item>
+        <item>Settings</item>
+        <item>Help</item>
+    </array>
+    <string name="title_activity_story_info">StoryInfoActivity</string>
+
+    <!-- Read Write Story -->
+    <string name="sentence_input_hint">Write your contribution here</string>
 
 </resources>

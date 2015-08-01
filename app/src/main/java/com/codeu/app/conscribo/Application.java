@@ -5,20 +5,8 @@ import com.codeu.app.conscribo.data.StoryTree;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
-// This class initializes the Parse settings and contains Conscribo members and utilities
+// This class initializes the Parse settings and contains Conscribo global members and utilities
 public class Application extends android.app.Application {
-
-    final static public int SCIFI =   0;
-    final static public int FAIRY =   1;
-    final static public int HORROR =  2;
-    final static public int MYSTERY = 3;
-    final static public int FANTASY = 4;
-    final static public int ROMANCE = 5;
-    final static public int SATIRE =  6;
-    final static public int WESTERN = 7;
-    final static public int OTHER =   8;
-
-    final static public int MAIN_DASHBOARDS_MAX_POSTS = 20;
 
     public Application() {
     }
@@ -35,20 +23,24 @@ public class Application extends android.app.Application {
 
     }
 
-    /* Checks the input sentence for a period at the end and no other place */
-    public static boolean hasSentenceEnd(String inputString) {
-        // Check to see if last char is the end of a sentence . ! ? "
+    public class Constants {
+        // Used to check Parcel Object id
+        final static public String STORY_OBJECT_PARCEL = "StoryObject";
+        final static public String STORY_TREE_PARCEL = "StoryTree";
 
-        if(inputString == null || inputString.length() <= 0) {
-            return false;
-        }
+        // Used for Create Story Activity to index match the genre_options string array
+        final static public int SCIFI =   0;
+        final static public int FAIRY =   1;
+        final static public int HORROR =  2;
+        final static public int MYSTERY = 3;
+        final static public int FANTASY = 4;
+        final static public int ROMANCE = 5;
+        final static public int SATIRE =  6;
+        final static public int WESTERN = 7;
+        final static public int OTHER =   8;
 
-        char lastChar = inputString.charAt(inputString.length() - 1);
-        if( lastChar == '.' || lastChar == '!' || lastChar == '?' || lastChar == '"' ) {
-            return true;
-        }
-
-        return false;
+        // Constant that determines the max number of posts to be queried in Main Dashboard
+        final static public int MAIN_DASHBOARDS_MAX_POSTS = 20;
     }
-
 }
+

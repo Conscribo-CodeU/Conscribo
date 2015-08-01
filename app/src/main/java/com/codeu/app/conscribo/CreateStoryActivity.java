@@ -213,7 +213,7 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
 
         // Check if the sentence is appropriate
         String sentenceInput = mSentenceEditText.getText().toString();
-        if (!Application.hasSentenceEnd(sentenceInput)) {
+        if (!Utility.hasSentenceEnd(sentenceInput)) {
             displaySubmissionErrorToast(INVALID_SENTENCE);
             return false;
         }
@@ -229,23 +229,23 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
                 .obtainTypedArray(R.array.genre_options_array).getString(position);
 
         switch(position){
-            case Application.SCIFI:
+            case Application.Constants.SCIFI:
                 break;
-            case Application.FAIRY:
+            case Application.Constants.FAIRY:
                 break;
-            case Application.HORROR:
+            case Application.Constants.HORROR:
                 break;
-            case Application.MYSTERY:
+            case Application.Constants.MYSTERY:
                 break;
-            case Application.FANTASY:
+            case Application.Constants.FANTASY:
                 break;
-            case Application.ROMANCE:
+            case Application.Constants.ROMANCE:
                 break;
-            case Application.SATIRE:
+            case Application.Constants.SATIRE:
                 break;
-            case Application.WESTERN:
+            case Application.Constants.WESTERN:
                 break;
-            case Application.OTHER:
+            case Application.Constants.OTHER:
                 break;
         }
     }

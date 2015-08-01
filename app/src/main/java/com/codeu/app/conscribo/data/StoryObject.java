@@ -6,6 +6,7 @@ import com.parse.ParseQuery;
 
 import org.json.JSONArray;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -26,7 +27,7 @@ import java.util.Date;
  *
  */
 @ParseClassName("StoryObject")
-public class StoryObject extends ParseObject {
+public class StoryObject extends ParseObject implements Serializable {
 
     public void makeStoryObject(String title, String genre, String author, String sentence) {
         setTitle(title);
@@ -82,9 +83,6 @@ public class StoryObject extends ParseObject {
     public String getGenre() {
         return getString("genre");
     }
-    public String getID() {
-        return getString("objectId");
-    }
     public ParseObject getTree() {
         return getParseObject("tree");
     }
@@ -107,9 +105,10 @@ public class StoryObject extends ParseObject {
         return getCreatedAt();
     }
 
-    // StoryObject
+    // StoryObject query
     public static ParseQuery<StoryObject> getQuery() {
         return ParseQuery.getQuery(StoryObject.class);
     }
+
 
 }

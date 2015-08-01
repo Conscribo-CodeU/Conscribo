@@ -8,6 +8,7 @@ import org.json.JSONArray;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by jeff on 7/30/15.
@@ -28,14 +29,13 @@ import java.util.Date;
  */
 @ParseClassName("StoryObject")
 public class StoryObject extends ParseObject implements Serializable {
-
-    public void makeStoryObject(String title, String genre, String author, String sentence) {
+    public void makeStoryObject(String title, String genre, List<String> authors, List<String> sentences, int depth) {
         setTitle(title);
         setGenre(genre);
-        addSentence(sentence);
-        addAuthor(author);
+        addSentences(sentences);
+        addAuthors(authors);
         setLikes();
-        setDepth();
+        setDepth(depth);
     }
 
     // Setters
@@ -51,14 +51,20 @@ public class StoryObject extends ParseObject implements Serializable {
     public void addSentence(String sentence) {
         add("listSentences", sentence);
     }
+    public void addSentences(List<String> sentences) {
+        addAll("listSentences", sentences);
+    }
     public void addAuthor(String author) {
         add("listAuthors", author);
+    }
+    public void addAuthors(List<String> authors) {
+        addAll("listAuthors", authors);
     }
     public void setLikes() {
         put("likes", 0);
     }
-    public void setDepth() {
-        put("depth", 0);
+    public void setDepth(int value) {
+        put("depth", value);
     }
 
 

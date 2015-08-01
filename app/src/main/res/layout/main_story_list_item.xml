@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:textSize="@dimen/abc_text_size_large_material"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="hello"/>
 
     <LinearLayout
@@ -23,6 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:gravity="center"
             android:text="hello"/>
 
@@ -30,6 +31,7 @@
             android:id="@+id/list_story_likes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_weight="1"
             android:gravity="center" />
 

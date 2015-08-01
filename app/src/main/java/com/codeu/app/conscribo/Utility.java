@@ -3,8 +3,13 @@ package com.codeu.app.conscribo;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.util.ArrayList;
+
 /**
  * Created by jeff on 8/1/15.
+ *
+ * This contains all of the different functions utilized when creating a StoryObject or
+ * getting the appropriate strings from a StoryObject.
  */
 public class Utility {
 
@@ -38,8 +43,7 @@ public class Utility {
         String stringsFromArray = "";
         for(int i = 0; i < array.length(); i++) {
             try {
-                // NEED TO FIX THE SPACE ISSUE. ADD SPACE WHENEVER A NEW ENTRY IS ADDED.
-                stringsFromArray += array.getString(i) + " ";
+                stringsFromArray += array.getString(i);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -74,4 +78,13 @@ public class Utility {
     }
 
 
+    public static ArrayList<String> convertJSONArrayToStringArrayList(JSONArray array) throws JSONException {
+        ArrayList<String> stringList = new ArrayList<String>();
+
+        for(int i = 0; i < array.length(); i++) {
+            stringList.add(array.getString(i));
+        }
+
+        return stringList;
+    }
 }

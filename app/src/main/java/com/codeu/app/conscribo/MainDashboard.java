@@ -69,7 +69,7 @@ public class MainDashboard extends ActionBarActivity {
         // Set ParseQueryAdapter to ListView
         mListView.setAdapter(mParseQueryAdapter);
 
-        // Set up click listen on list items to have certain ones be selected and highlighted
+        // Set up click listen on list items to save the selected StoryObjects
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView< ?> parent, View view, int position, long id) {
 

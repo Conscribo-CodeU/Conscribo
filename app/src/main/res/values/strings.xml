@@ -75,5 +75,7 @@
 
     <!-- Read Write Story -->
     <string name="sentence_input_hint">Write your contribution here</string>
+    <string name="rw_submit">Submit</string>
+    <string name="rw_contributor_name_input_hint">Contributor\'s name</string>
 
 </resources>

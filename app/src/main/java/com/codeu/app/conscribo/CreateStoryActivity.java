@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,10 +17,9 @@ import android.widget.Toast;
 
 import com.codeu.app.conscribo.data.StoryObject;
 import com.codeu.app.conscribo.data.StoryTree;
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class CreateStoryActivity extends ActionBarActivity implements AdapterView.OnItemSelectedListener {
@@ -121,27 +119,35 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
                 // Check if the submission is valid and then Create Parse Object and save
                 if(isValidStorySubmission()) {
 
+                    // Create ArrayList of sentences and authors
+                    List<String> sentenceList = new ArrayList<String>();
+                    List<String> authorList = new ArrayList<String>();
+
+                    sentenceList.add(mSentenceEditText.getText().toString());
+                    authorList.add(mCreatorEditText.getText().toString());
+
                     // Create StoryTree
                     StoryTree tree = new StoryTree();
                     tree.makeStoryTree(mTitleEditText.getText().toString(),
                             mGenreSelectedStr,
                             mCreatorEditText.getText().toString());
 
-                    // Create StoryObject
+                    // Create StoryObject. Set depth to 0.
                     StoryObject story = new StoryObject();
                     story.makeStoryObject(mTitleEditText.getText().toString(),
                             mGenreSelectedStr,
-                            mCreatorEditText.getText().toString(),
-                            mSentenceEditText.getText().toString());
+                            authorList,
+                            sentenceList,
+                            0);
                     story.setTree(tree);
 
-
-
                     // Save the StoryObject and the StoryTree.
-                    // ***NOTE: Saving the StoryObject will save both.
+                    // ***NOTE: Saving the StoryObject will save both the StoryObject and StoryTree.
                     story.saveInBackground();
 
+                    /*
                     // Test to see if you can query a StoryObject based on its tree
+                    // Result: SUCCESS! You can query a StoryObject by its tree.
                     ParseQuery<ParseObject> query = ParseQuery.getQuery("StoryObject");
                     query.getFirstInBackground(new GetCallback<ParseObject>() {
                         @Override
@@ -176,6 +182,7 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
                             }
                         }
                     });
+                    */
 
                     // Show toast confirmation. Finish activity and go back to MainDashboard
                     Toast.makeText(getApplicationContext(),

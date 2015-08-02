@@ -33,7 +33,7 @@ public class MainDashboard extends ActionBarActivity {
 
     private Activity self;
 
-    final private String LOGTAG = MainDashboard.class.getName();
+    final private String LOGTAG = MainDashboard.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +131,7 @@ public class MainDashboard extends ActionBarActivity {
 
                         ParseQuery<StoryObject> query = StoryObject.getQuery();
                         query.setLimit(Application.Constants.MAIN_DASHBOARDS_MAX_POSTS);
-                        query.orderByDescending("createdAt");
+                        query.orderByDescending("updatedAt");
                         return query;
                     }
                 };
@@ -156,10 +156,10 @@ public class MainDashboard extends ActionBarActivity {
 
                 //  Set the content based on the story
                 titleView.setText(story.getTitle());
-                authorView.setText( Utility.getLastAuthorFromJSONArray(story.getAuthorsJSONArray()));
+                authorView.setText( Utility.getLastStringFromJSONArray(story.getAuthorsJSONArray()));
                 likesView.setText(Integer.toString(story.getLikes()) +  " likes" );
                 genreImage.setImageResource( Utility.findGenreDrawable( story.getGenre() ) );
-                blurb.setText( Utility.generateStringFromJSONArray(story.getSentencesJSONArray()) );
+                blurb.setText( Utility.generateLastStringFromJSONArray(story.getSentencesJSONArray()) );
 
                 return view;
             }

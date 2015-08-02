@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/relative_layout_branch"
+    android:layout_alignTop="@+id/sentence_branch_text"
+    android:layout_alignBottom="@+id/sentence_branch_text">
+
+    <!-- Have a bunch of invisible ImageViews with fixed size  -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:scaleType="center"
+        android:layout_alignTop="@+id/sentence_branch_text"
+        android:layout_alignBottom="@+id/sentence_branch_text"
+        android:paddingLeft="5dp"
+        android:src="@drawable/conscribo_branch_divider"
+        android:id="@+id/branch_divider_0"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:layout_alignTop="@+id/sentence_branch_text"
+        android:layout_alignBottom="@+id/sentence_branch_text"
+        android:layout_toRightOf="@+id/branch_divider_0"
+        android:paddingLeft="5dp"
+        android:src="@drawable/conscribo_branch_divider"
+        android:id="@+id/branch_divider_1"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:layout_alignTop="@+id/sentence_branch_text"
+        android:layout_alignBottom="@+id/sentence_branch_text"
+        android:layout_toRightOf="@+id/branch_divider_1"
+        android:paddingLeft="5dp"
+        android:src="@drawable/conscribo_branch_divider"
+        android:id="@+id/branch_divider_2"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:layout_alignTop="@+id/sentence_branch_text"
+        android:layout_alignBottom="@+id/sentence_branch_text"
+        android:layout_toRightOf="@+id/branch_divider_2"
+        android:paddingLeft="5dp"
+        android:src="@drawable/conscribo_branch_divider"
+        android:id="@+id/branch_divider_3"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:layout_alignTop="@+id/sentence_branch_text"
+        android:layout_alignBottom="@+id/sentence_branch_text"
+        android:layout_toRightOf="@+id/branch_divider_3"
+        android:paddingLeft="5dp"
+        android:src="@drawable/conscribo_branch_divider"
+        android:id="@+id/branch_divider_4"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:layout_alignTop="@+id/sentence_branch_text"
+        android:layout_alignBottom="@+id/sentence_branch_text"
+        android:layout_toRightOf="@+id/branch_divider_4"
+        android:paddingLeft="5dp"
+        android:src="@drawable/conscribo_branch_divider"
+        android:id="@+id/branch_divider_5"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:layout_alignTop="@+id/sentence_branch_text"
+        android:layout_alignBottom="@+id/sentence_branch_text"
+        android:layout_toRightOf="@+id/branch_divider_5"
+        android:paddingLeft="5dp"
+        android:src="@drawable/conscribo_branch_divider"
+        android:id="@+id/branch_divider_6"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:layout_alignTop="@+id/sentence_branch_text"
+        android:layout_alignBottom="@+id/sentence_branch_text"
+        android:layout_toRightOf="@+id/branch_divider_6"
+        android:paddingLeft="5dp"
+        android:src="@drawable/conscribo_branch_divider"
+        android:id="@+id/branch_divider_7"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:layout_alignTop="@+id/sentence_branch_text"
+        android:layout_alignBottom="@+id/sentence_branch_text"
+        android:layout_toRightOf="@+id/branch_divider_7"
+        android:paddingLeft="5dp"
+        android:src="@drawable/conscribo_branch_divider"
+        android:id="@+id/branch_divider_8"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:layout_alignTop="@+id/sentence_branch_text"
+        android:layout_alignBottom="@+id/sentence_branch_text"
+        android:layout_toRightOf="@+id/branch_divider_8"
+        android:paddingLeft="5dp"
+        android:src="@drawable/conscribo_branch_divider"
+        android:id="@+id/branch_divider_9"
+        android:visibility="invisible"/>
+
+    <!--Must dynamically set alignParentLeft to be false if not the root sentence.
+            TextView textView = findViewById(R.id.sentence_branch_text);
+            RelativeLayout.LayoutParams params =
+            new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.FALSE);
+            textView.setLayoutParams(params);
+
+        Also must dynamically set toRightOf to the appropriate depth
+            RelativeLayout.LayoutParams params =
+                new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+            params.addRule(RelativeLayout.TO_RIGHT_OF, R.id.branch_divider_#);
+            textView.setLayoutParams(params);
+
+        Also must dynamically set appropriate number of branches to visible.
+
+                -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sentence_branch_text"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        />
+
+</RelativeLayout>

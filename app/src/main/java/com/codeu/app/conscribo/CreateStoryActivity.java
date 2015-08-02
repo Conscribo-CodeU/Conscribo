@@ -24,7 +24,7 @@ import java.util.List;
 
 public class CreateStoryActivity extends ActionBarActivity implements AdapterView.OnItemSelectedListener {
 
-    final private String LOGTAG = CreateStoryActivity.class.getName();
+    final private String LOGTAG = CreateStoryActivity.class.getSimpleName();
 
     final private int NULL_CREATOR = 0;
     final private int SHORT_CREATOR = 1;
@@ -39,7 +39,6 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
     private EditText mTitleEditText;
     private EditText mSentenceEditText;
     private TextView mCharacterCountTextView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

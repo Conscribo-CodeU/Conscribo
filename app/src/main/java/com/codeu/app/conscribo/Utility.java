@@ -29,7 +29,7 @@ public class Utility {
         return false;
     }
 
-    public static String getLastAuthorFromJSONArray(JSONArray array) {
+    public static String getLastStringFromJSONArray(JSONArray array) {
         String author = "";
         try {
             author = array.getString( array.length() - 1);
@@ -37,6 +37,18 @@ public class Utility {
             e.printStackTrace();
         }
         return author;
+    }
+
+    public static String getStringFromJSONArray(JSONArray array, int index) {
+        if (index >= array.length() || 0 <= array.length() ) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        try {
+            return array.getString(index);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static String generateStringFromJSONArray(JSONArray array) {

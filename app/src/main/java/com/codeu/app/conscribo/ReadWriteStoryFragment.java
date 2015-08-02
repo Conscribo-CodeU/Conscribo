@@ -38,9 +38,9 @@ public class ReadWriteStoryFragment extends Fragment {
 
     private String mStoryId;
     private StoryObject mStoryObject;
-    private String mStoryText;
+    private static String mStoryText;
 
-    private final String LOGTAG = ReadWriteStoryFragment.class.getName();
+    private final String LOGTAG = ReadWriteStoryFragment.class.getSimpleName();
 
     private final String CONSCRIBO_SHARE_HASHTAG = "#ConscriboApp";
 
@@ -84,7 +84,6 @@ public class ReadWriteStoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_read_write_story, container, false);
 
-
         // Retrieve intent and check if there is a Story ID
         Intent i = getActivity().getIntent();
         Bundle b = i.getExtras();
@@ -106,14 +105,15 @@ public class ReadWriteStoryFragment extends Fragment {
             query.getFirstInBackground(new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject parseObject, ParseException e) {
-                    if (parseObject == null) {
+                    if (mStoryObject == null && e == null) {
 
+                        // Set all textViews based on StoryObject
+                        setStoryViews((StoryObject) parseObject);
+                    } else {
                         Log.e(LOGTAG, "Query for objectId " + mStoryId + " failed");
                         e.printStackTrace();
                         getActivity().finish();
-                    } else {
-                        // Set all textViews based on StoryObject
-                        setStoryViews((StoryObject) parseObject);
+
                     }
                 }
             });
@@ -256,10 +256,11 @@ public class ReadWriteStoryFragment extends Fragment {
         TextView sentencesText = (TextView) getActivity().findViewById(R.id.rw_sentences_text);
 
         // Save the story so it can be shared
-        mStoryText = Utility.generateStringFromJSONArray( story.getSentencesJSONArray());
+        mStoryText = Utility.generateLastStringFromJSONArray(story.getSentencesJSONArray());
+        Log.e(LOGTAG, "Set mStoryText to: " + mStoryText);
 
         titleText.setText(story.getTitle());
-        authorText.setText(Utility.getLastAuthorFromJSONArray( story.getAuthorsJSONArray() ) );
+        authorText.setText(Utility.getLastStringFromJSONArray(story.getAuthorsJSONArray()) );
         storyImage.setImageResource(Utility.findGenreDrawable( story.getGenre()));
         sentencesText.setText(mStoryText);
     }

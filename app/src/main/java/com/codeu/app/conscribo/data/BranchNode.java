@@ -50,10 +50,13 @@ public class BranchNode {
         int parentDepth = this.story.getDepth() - 1;
         //Get parent key from parentDepth + parentAuthor + parentSentence
         return parentDepth +
-                Utility.getStringFromJSONArray( this.story.getAuthorsJSONArray(),parentDepth) +
-                Utility.getStringFromJSONArray( this.story.getSentencesJSONArray(),parentDepth);
+                Utility.getStringFromJSONArray( this.story.getAuthorsJSONArray(), parentDepth) +
+                Utility.getStringFromJSONArray( this.story.getSentencesJSONArray(), parentDepth);
     }
     public BranchNode getNext(){
         return this.next;
+    }
+    public int getDepth() {
+        return this.story.getDepth();
     }
 }

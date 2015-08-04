@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,34 +41,20 @@ public class MainDashboard extends ActionBarActivity {
 
         mSelectedStory = null;
 
-        /*
-        // Query Test
-        // Result: SUCCESS! I successfully Queried a list of StoryObjects for the new story feed
-        ParseQuery<StoryObject> query = StoryObject.getQuery();
-        query.setLimit(Application.MAIN_DASHBOARDS_MAX_POSTS);
-        query.orderByDescending("createdAt");
-        query.findInBackground(new FindCallback<StoryObject>() {
-            @Override
-            public void done(List<StoryObject> list, ParseException e) {
-                for(StoryObject story : list) {
-                    Log.v("TEST", story.getTitle());
-                }
-            }
-        });
-        */
-
         self = this;
 
         // Get reference to ListView and set ChoiceModeSingle
         mListView = (ListView) findViewById(R.id.listview_main);
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+//        mListView.setSelector(R.drawable.touch_selector);
+
 
         createNewStoriesQueryAdapter();
 
         // Set ParseQueryAdapter to ListView
         mListView.setAdapter(mParseQueryAdapter);
 
-        // Set up click listen on list items to save the selected StoryObjects
+        // Set up click listener on list items to save the selected StoryObjects
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView< ?> parent, View view, int position, long id) {
 
@@ -85,10 +70,8 @@ public class MainDashboard extends ActionBarActivity {
 
                 // Place story name in extra of Intent and send to activity
                 if(mSelectedStory != null) {
-
                     Intent i = new Intent(self, ReadWriteStoryActivity.class);
                     i.putExtra("selectedStoryId", mSelectedStory.getObjectId());
-                    Log.e(LOGTAG, mSelectedStory.getObjectId());
                     startActivity(i);
                 } else {
                     // Tell user to select a story first
@@ -159,7 +142,7 @@ public class MainDashboard extends ActionBarActivity {
                 authorView.setText( Utility.getLastStringFromJSONArray(story.getAuthorsJSONArray()));
                 likesView.setText(Integer.toString(story.getLikes()) +  " likes" );
                 genreImage.setImageResource( Utility.findGenreDrawable( story.getGenre() ) );
-                blurb.setText( Utility.generateLastStringFromJSONArray(story.getSentencesJSONArray()) );
+                blurb.setText( Utility.generateStringFromJSONArray(story.getSentencesJSONArray()));
 
                 return view;
             }

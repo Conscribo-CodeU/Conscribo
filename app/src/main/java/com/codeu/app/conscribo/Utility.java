@@ -1,5 +1,7 @@
 package com.codeu.app.conscribo;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -12,6 +14,7 @@ import java.util.ArrayList;
  * getting the appropriate strings from a StoryObject.
  */
 public class Utility {
+    private static final String LOGTAG = Utility.class.getSimpleName();
 
     /* Checks the input sentence for a period at the end and no other place */
     public static boolean hasSentenceEnd(String inputString) {
@@ -29,6 +32,7 @@ public class Utility {
         return false;
     }
 
+    // Used for getting the last String in the JSONArray
     public static String getLastStringFromJSONArray(JSONArray array) {
         String author = "";
         try {
@@ -39,8 +43,10 @@ public class Utility {
         return author;
     }
 
+    // Used for getting an individual element from JSONArray
     public static String getStringFromJSONArray(JSONArray array, int index) {
-        if (index >= array.length() || 0 <= array.length() ) {
+        if (index >= array.length() || index < 0 ) {
+            Log.e(LOGTAG, "index = " + index + " array.length() = " + array.length());
             throw new ArrayIndexOutOfBoundsException();
         }
         try {
@@ -51,6 +57,7 @@ public class Utility {
         return null;
     }
 
+    // Used to combine all Strings from JSONArray
     public static String generateStringFromJSONArray(JSONArray array) {
         String stringsFromArray = "";
         for(int i = 0; i < array.length(); i++) {

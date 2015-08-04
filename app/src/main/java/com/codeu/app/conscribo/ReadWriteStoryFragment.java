@@ -256,7 +256,7 @@ public class ReadWriteStoryFragment extends Fragment {
         TextView sentencesText = (TextView) getActivity().findViewById(R.id.rw_sentences_text);
 
         // Save the story so it can be shared
-        mStoryText = Utility.generateLastStringFromJSONArray(story.getSentencesJSONArray());
+        mStoryText = Utility.getLastStringFromJSONArray(story.getSentencesJSONArray());
         Log.e(LOGTAG, "Set mStoryText to: " + mStoryText);
 
         titleText.setText(story.getTitle());

@@ -156,10 +156,11 @@ public class MainDashboard extends ActionBarActivity {
 
                 //  Set the content based on the story
                 titleView.setText(story.getTitle());
-                authorView.setText( Utility.getLastStringFromJSONArray(story.getAuthorsJSONArray()));
-                likesView.setText(Integer.toString(story.getLikes()) +  " likes" );
-                genreImage.setImageResource( Utility.findGenreDrawable( story.getGenre() ) );
-                blurb.setText( Utility.generateLastStringFromJSONArray(story.getSentencesJSONArray()) );
+                authorView.setText( Utility.generateStringFromJSONArray(story.getAuthorsJSONArray()));
+                likesView.setText(Integer.toString(story.getLikes()) + " likes");
+                genreImage.setImageResource(Utility.findGenreDrawable(story.getGenre()));
+                //blurb.setText( Utility.generateLastStringFromJSONArray(story.getSentencesJSONArray()) );
+                blurb.setText( Utility.generateStringFromJSONArray(story.getSentencesJSONArray()) );
 
                 return view;
             }

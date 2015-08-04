@@ -81,6 +81,8 @@
 
     <!-- Tree Branches -->
     <string name="title_activity_tree_branch">Tree Branches</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="title_activity_dispatch">DispatchActivity</string>
 
 
 </resources>

@@ -42,7 +42,7 @@ public class Application extends android.app.Application {
         // Constant that determines the max number of posts to be queried in Main Dashboard
         final static public int MAIN_DASHBOARDS_MAX_POSTS = 20;
 
-        final static public int[] BRANCH_DIVIDERS_ARRAY = new int[]{
+        final public int[] BRANCH_DIVIDERS_ARRAY = new int[]{
                 R.id.branch_divider_0,
                 R.id.branch_divider_1,
                 R.id.branch_divider_2,
@@ -53,7 +53,7 @@ public class Application extends android.app.Application {
                 R.id.branch_divider_7,
                 R.id.branch_divider_8,
                 R.id.branch_divider_9
-        }
+        };
     }
 }
 

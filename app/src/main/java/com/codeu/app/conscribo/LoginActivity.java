@@ -1,54 +1,48 @@
 package com.codeu.app.conscribo;
 
 import android.content.Intent;
-import android.content.IntentSender;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.plus.Plus;
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 
-public class LoginActivity extends ActionBarActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        View.OnClickListener {
+public class LoginActivity extends ActionBarActivity {
 
-    /* Request code used to invoke sign in user interactions. */
-    private static final int RC_SIGN_IN = 0;
+    /* Views for Parse Login */
+    private EditText usernameEditText;
+    private EditText passwordEditText;
 
-    /* Client used to interact with Google APIs. */
-    private GoogleApiClient mGoogleApiClient;
-
-    /* Is there a ConnectionResult resolution in progress? */
-    private boolean mIsResolving = false;
-
-    /* Should we automatically resolve ConnectionResults when possible? */
-    private boolean mShouldResolve = false;
-
-    private final String G_SIGN_IN_TAG = "Google Sign In: ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Build GoogleApiClient with access to basic profile
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(Plus.API)
-                .addScope(new Scope(Scopes.PROFILE))
-                .build();
+        usernameEditText = (EditText) findViewById(R.id.login_user_edit_text);
+        passwordEditText = (EditText) findViewById(R.id.login_password_edit_text);
 
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
+        Button loginButton = (Button) findViewById(R.id.login_button);
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show a message to the user that we are signing in.
+                TextView mStatusTextView = (TextView) findViewById(R.id.signInTextView);
+                mStatusTextView.setText("Signing in...");
+
+                login();
+            }
+        });
 
     }
 
@@ -75,110 +69,48 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.sign_in_button) {
-            onSignInClicked();
+
+    private void login() {
+        String username = usernameEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString().trim();
+
+        // Validate the log in data
+        boolean validationError = false;
+        StringBuilder validationErrorMessage = new StringBuilder("Invalid Sign Up");
+        if (username.length() == 0) {
+            validationError = true;
+            validationErrorMessage.append("Invalid Sign Up - Username length is 0");
         }
-/* TO-DO
-        if (view.getId() == R.id.sign_out_button) {
-            onSignOutClicked();
+        if (password.length() == 0) {
+            if (validationError) {
+                validationErrorMessage.append("Invalid Sign Up - Password length is 0");
+            }
+            validationError = true;
+            validationErrorMessage.append("Invalid Sign Up - Password length is 0");
         }
-        */
-    }
+        validationErrorMessage.append("Invalid Sign Up");
 
-    private void onSignInClicked() {
-        // User clicked the sign-in button, so begin the sign-in process and automatically
-        // attempt to resolve any errors that occur.
-        mShouldResolve = true;
-        mGoogleApiClient.connect();
-
-        // Show a message to the user that we are signing in.
-        TextView mStatusTextView = (TextView) findViewById(R.id.signInTextView);
-        mStatusTextView.setText("Signing in...");
-    }
-
-    private void onSignOutClicked() {
-        // Clear the default account so that GoogleApiClient will not automatically
-        // connect in the future.
-        if (mGoogleApiClient.isConnected()) {
-            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-            mGoogleApiClient.disconnect();
+        if (validationError) {
+            Toast.makeText(LoginActivity.this, validationErrorMessage.toString(), Toast.LENGTH_LONG)
+                    .show();
+            return;
         }
 
-        //showSignedOutUI();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        // onConnected indicates that an account was selected on the device, that the selected
-        // account has granted any requested permissions to our app and that we were able to
-        // establish a service connection to Google Play services.
-        Log.d(G_SIGN_IN_TAG, "onConnected:" + bundle);
-        mShouldResolve = false;
-
-        // Show the signed-in UI
-        //showSignedInUI();
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        // Could not connect to Google Play Services.  The user needs to select an account,
-        // grant permissions or resolve an error in order to sign in. Refer to the javadoc for
-        // ConnectionResult to see possible error codes.
-        Log.d(G_SIGN_IN_TAG, "onConnectionFailed:" + connectionResult);
-
-        if (!mIsResolving && mShouldResolve) {
-            if (connectionResult.hasResolution()) {
-                try {
-                    connectionResult.startResolutionForResult(this, RC_SIGN_IN);
-                    mIsResolving = true;
-                } catch (IntentSender.SendIntentException e) {
-                    Log.e(G_SIGN_IN_TAG, "Could not resolve ConnectionResult.", e);
-                    mIsResolving = false;
-                    mGoogleApiClient.connect();
+        // Call the Parse login method
+        ParseUser.logInInBackground(username, password, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException e) {
+                if (e != null) {
+                    // Show the error message
+                    Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                } else {
+                    // Start an intent for the dispatch activity
+                    Intent intent = new Intent(LoginActivity.this, MainDashboard.class);
+                    startActivity(intent);
+                    finish();
                 }
-            } else {
-                // Could not resolve the connection result, show the user an
-                // error dialog.
-                //showErrorDialog(connectionResult);
             }
-        } else {
-            // Show the signed-out UI
-            //showSignedOutUI();
-        }
+        });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mGoogleApiClient.disconnect();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d(G_SIGN_IN_TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
-
-        if (requestCode == RC_SIGN_IN) {
-            // If the error resolution was not successful we should not resolve further.
-            if (resultCode != RESULT_OK) {
-                mShouldResolve = false;
-            }
-
-            mIsResolving = false;
-            mGoogleApiClient.connect();
-        }
-    }
 }

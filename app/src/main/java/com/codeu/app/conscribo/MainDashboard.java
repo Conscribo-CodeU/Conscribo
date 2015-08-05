@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.codeu.app.conscribo.data.StoryObject;
 import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
+import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -212,6 +213,17 @@ public class MainDashboard extends ActionBarActivity {
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
+        else if (id == R.id.action_sign_up) {
+            startActivity(new Intent(this, SignUpActivity.class));
+            return true;
+        }
+        else if (id == R.id.action_log_out) {
+            ParseUser.logOut();
+            Intent intent = new Intent(MainDashboard.this, DispatchActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -220,5 +232,10 @@ public class MainDashboard extends ActionBarActivity {
     public void onResume() {
         super.onResume();
         mParseQueryAdapter.loadObjects();
+
+        if (ParseUser.getCurrentUser() != null) {
+            Log.e("LOGIN SUCCESSFUL", "INCORRECT CONVENTIONS BRO");
+        }
+
     }
 }

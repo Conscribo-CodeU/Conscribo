@@ -88,12 +88,12 @@
         android:id="@+id/password_again_edit_text"
         android:autoText="false"
         android:contentDescription="Enter your password"
-        android:layout_above="@+id/button"
+        android:layout_above="@+id/register_button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="29dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_marginBottom="38dp"
+        android:layout_alignRight="@+id/password_edit_text"
+        android:layout_alignEnd="@+id/password_edit_text" />
 
     <TextView
         android:layout_width="wrap_content"

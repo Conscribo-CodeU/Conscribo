@@ -95,6 +95,14 @@ public class SignUpActivity extends ActionBarActivity {
             }
         });
 
+        /* Set-Up for what the User data model should have */
+
+        /*
+        user.put("likes", "0");
+        user.add("favorites", null);
+
+        */
+
     }
 
 

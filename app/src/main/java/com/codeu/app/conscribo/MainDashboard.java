@@ -60,7 +60,7 @@ public class MainDashboard extends ActionBarActivity {
 
         // Set up click listener on list items to save the selected StoryObjects
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView< ?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 mSelectedStory = mParseQueryAdapter.getItem(position);
             }
@@ -73,7 +73,7 @@ public class MainDashboard extends ActionBarActivity {
             public void onClick(View v) {
 
                 // Place story name in extra of Intent and send to activity
-                if(mSelectedStory != null) {
+                if (mSelectedStory != null) {
                     Intent i = new Intent(self, ReadWriteStoryActivity.class);
                     i.putExtra("selectedStoryId", mSelectedStory.getObjectId());
                     startActivity(i);
@@ -81,8 +81,9 @@ public class MainDashboard extends ActionBarActivity {
                     // Tell user to select a story first
                     Toast.makeText(getApplicationContext(),
                             "Please select a story",
-                            Toast.LENGTH_SHORT ).show();
+                            Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 
@@ -90,7 +91,15 @@ public class MainDashboard extends ActionBarActivity {
         tempCreateStoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(self, CreateStoryActivity.class));
+                if (hasUser) {
+                    startActivity(new Intent(self, CreateStoryActivity.class));
+                }
+                else {
+                    //Cannot do action until user is logged in.
+                    Toast.makeText(getApplicationContext(),
+                            "Please login before creating a new story",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -172,7 +181,13 @@ public class MainDashboard extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        if (hasUser) {
+            getMenuInflater().inflate(R.menu.menu_logged_in_main, menu);
+        }
+        else {
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+        }
+
         return true;
     }
 
@@ -224,14 +239,10 @@ public class MainDashboard extends ActionBarActivity {
     public void onStart() {
         super.onStart();
 
-        if (ParseUser.getCurrentUser() != null) {
-            hasUser = true;
-        }
-        else {
-            hasUser = false;
-        }
+        hasUser = Utility.userLoggedIn();
 
         //Test whether logging in and logging out works.
         //Log.v("Logged in:", "User logged in is " + hasUser);
     }
+
 }

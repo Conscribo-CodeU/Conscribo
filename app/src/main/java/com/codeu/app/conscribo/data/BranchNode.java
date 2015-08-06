@@ -1,6 +1,7 @@
 package com.codeu.app.conscribo.data;
 
 import com.codeu.app.conscribo.Utility;
+import com.parse.ParseUser;
 
 /**
  * Created by jeff on 8/2/15.
@@ -9,6 +10,7 @@ import com.codeu.app.conscribo.Utility;
 public class BranchNode {
     private StoryObject story;
     private String author;
+    private ParseUser user;
     private String sentence;
     private int depth;
     private BranchNode next;
@@ -31,6 +33,9 @@ public class BranchNode {
     }
     public void setNext(BranchNode node) {
         this.next = node;
+    }
+    public void setUser(ParseUser user) {
+        this.user = user;
     }
 
     // Getters
@@ -58,5 +63,8 @@ public class BranchNode {
     }
     public int getDepth() {
         return this.story.getDepth();
+    }
+    public ParseUser getUser() {
+        return this.user;
     }
 }

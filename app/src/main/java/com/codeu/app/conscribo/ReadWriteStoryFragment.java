@@ -161,7 +161,13 @@ public class ReadWriteStoryFragment extends Fragment {
         treeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Create intent to start TreeBranchActivity
+                // Provide treeId in the intent.
+                String treeId = mStoryObject.getTree().getObjectId();
 
+                Intent i = new Intent(getActivity(), TreeBranchActivity.class);
+                i.putExtra("treeId", treeId);
+                startActivity(i);
             }
         });
 
@@ -256,7 +262,9 @@ public class ReadWriteStoryFragment extends Fragment {
         TextView sentencesText = (TextView) getActivity().findViewById(R.id.rw_sentences_text);
 
         // Save the story so it can be shared
-        mStoryText = Utility.getLastStringFromJSONArray(story.getSentencesJSONArray());
+
+        mStoryText = Utility.generateStringFromJSONArray(story.getSentencesJSONArray());
+
         Log.e(LOGTAG, "Set mStoryText to: " + mStoryText);
 
         titleText.setText(story.getTitle());

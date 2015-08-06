@@ -5,7 +5,7 @@ import com.codeu.app.conscribo.data.StoryTree;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
-// This class initializes the Parse settings and contains Conscribo global members and utilities
+// This class initializes the Parse settings and contains Conscribo global members
 public class Application extends android.app.Application {
 
     public Application() {
@@ -23,7 +23,7 @@ public class Application extends android.app.Application {
 
     }
 
-    public class Constants {
+    public static class Constants {
         // Used to check Parcel Object id
         final static public String STORY_OBJECT_PARCEL = "StoryObject";
         final static public String STORY_TREE_PARCEL = "StoryTree";
@@ -54,6 +54,7 @@ public class Application extends android.app.Application {
                 R.id.branch_divider_8,
                 R.id.branch_divider_9
         };
+
     }
 }
 

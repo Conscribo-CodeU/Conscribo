@@ -36,6 +36,9 @@ public class MainDashboard extends ActionBarActivity {
 
     final private String LOGTAG = MainDashboard.class.getSimpleName();
 
+    //Static variable to maintain that the user is logged in throughout all new calls to MainDashboard
+    private static boolean hasUser = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -232,10 +235,20 @@ public class MainDashboard extends ActionBarActivity {
     public void onResume() {
         super.onResume();
         mParseQueryAdapter.loadObjects();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
 
         if (ParseUser.getCurrentUser() != null) {
-            Log.e("LOGIN SUCCESSFUL", "INCORRECT CONVENTIONS BRO");
+            hasUser = true;
+        }
+        else {
+            hasUser = false;
         }
 
+        //Test whether logging in and logging out works.
+        //Log.v("Logged in:", "User logged in is " + hasUser);
     }
 }

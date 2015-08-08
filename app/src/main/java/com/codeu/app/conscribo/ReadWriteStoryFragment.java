@@ -158,10 +158,18 @@ public class ReadWriteStoryFragment extends Fragment {
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!((ArrayList<StoryObject>) user.get("liked")).contains(mStoryObject) && !user.equals(mStoryObject.getUser())) {
-                    mStoryObject.getUser().put("likes", (int) mStoryObject.getUser().get("likes") + 1); //Need to delete the other stories. ALso need to test if this affects all author's likes
+                if (!((ArrayList<StoryObject>) user.get("liked")).contains(mStoryObject)) //&& !user.equals(mStoryObject.getUser())) { //mStoryObject.getUser is what is crashing the app
+
+                    for (StoryObject item: (ArrayList<StoryObject>) user.get("liked")) {
+                        Log.v("TESTING", item.getTitle());
+                    }
+
+                    //int numLikes = mStoryObject.getUser().getInt("likes") + 1;
+                    mStoryObject.getUser().increment("likes"); //Need to delete the other stories. ALso need to test if this affects all author's likes
                     mStoryObject.addLike();
                     user.add("liked", mStoryObject);
+
+                    user.saveInBackground();
                 }
             }
         });
@@ -177,7 +185,7 @@ public class ReadWriteStoryFragment extends Fragment {
                 }
 
                 //Error handling in the method.
-                ((StoryTree) mStoryObject.getTree()).addSubscriber(user);
+                //((StoryTree) mStoryObject.getTree()).addSubscriber(user);
 
 
             }
@@ -227,12 +235,15 @@ public class ReadWriteStoryFragment extends Fragment {
                     String sentence = sentenceInput.getText().toString();
                     String author = authorInput.getText().toString();
 
+                    // Check if the submission is valid and show the appropriate Toast
                     if(author.length() < 4){
                         Toast.makeText(context, "Author's name must be at least 4 characters",
                                 Toast.LENGTH_SHORT).show();
-
                     } else if( !Utility.hasSentenceEnd(sentence)) {
                         Toast.makeText(context, "Please finish your sentence",
+                                Toast.LENGTH_SHORT).show();
+                    } else if(sentence.length() > 150) {
+                        Toast.makeText(context, "Keep your sentence under 150 characters",
                                 Toast.LENGTH_SHORT).show();
                     } else {
 

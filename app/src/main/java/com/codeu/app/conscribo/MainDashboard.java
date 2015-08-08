@@ -1,6 +1,8 @@
 package com.codeu.app.conscribo;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -23,7 +25,7 @@ import com.parse.ParseUser;
 import java.util.List;
 
 
-public class MainDashboard extends ActionBarActivity {
+public class MainDashboard extends ActionBarActivity implements ActionBar.TabListener {
 
     private ListView mListView;
 
@@ -50,8 +52,9 @@ public class MainDashboard extends ActionBarActivity {
         // Get reference to ListView and set ChoiceModeSingle
         mListView = (ListView) findViewById(R.id.listview_main);
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-//        mListView.setSelector(R.drawable.touch_selector);
 
+        // TODO: Create the tabs
+        createActionBarTabs();
 
         createNewStoriesQueryAdapter();
 
@@ -113,6 +116,28 @@ public class MainDashboard extends ActionBarActivity {
         });
 
 
+    }
+
+    private void createActionBarTabs() {
+        /*
+        // setup action bar for tabs
+        ActionBar actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setDisplayShowTitleEnabled(false);
+
+        ActionBar.Tab tab = actionBar.newTab()
+                .setText(R.string.new_tab)
+                .setTabListener(new TabListener<ArtistFragment>(
+                        this, "artist", ArtistFragment.class));
+        actionBar.addTab(tab);
+
+        tab = actionBar.newTab()
+                .setText(R.string.album)
+                .setTabListener(new TabListener<AlbumFragment>(
+                        this, "album", AlbumFragment.class));
+
+        actionBar.addTab(tab);
+        */
     }
 
     private void createNewStoriesQueryAdapter() {
@@ -208,6 +233,7 @@ public class MainDashboard extends ActionBarActivity {
             return true;
         }
         else if (id == R.id.action_refresh) {
+            mParseQueryAdapter.loadObjects();
             return true;
         }
         else if (id == R.id.action_settings) {
@@ -249,4 +275,17 @@ public class MainDashboard extends ActionBarActivity {
         //Log.v("Logged in:", "User logged in is " + hasUser);
     }
 
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+
+    }
+
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+
+    }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+
+    }
 }

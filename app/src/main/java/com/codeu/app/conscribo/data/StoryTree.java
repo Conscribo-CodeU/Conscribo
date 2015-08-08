@@ -29,7 +29,7 @@ public class StoryTree extends ParseObject {
         setGenre(genre);
         setCreator(creator);
         setUser(user);
-        setSubscribers();
+        //setSubscribers();
     }
 
 

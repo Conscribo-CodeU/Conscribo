@@ -1,10 +1,11 @@
 package com.codeu.app.conscribo;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 import com.parse.ParseUser;
 
@@ -12,6 +13,7 @@ import com.parse.ParseUser;
 public class ReadWriteStoryActivity extends ActionBarActivity {
 
     private boolean hasUser;
+    private EditText mContributionSentenceEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +21,14 @@ public class ReadWriteStoryActivity extends ActionBarActivity {
         setContentView(R.layout.activity_read_write_story);
 
     }
+
+    private void updateCharacterCountTextViewText(){
+        String updatedCharacterCount = String.format("%d/150 characters",
+                mContributionSentenceEditText.getText().toString().length());
+        mContributionSentenceEditText.setText(updatedCharacterCount);
+
+    }
+
 
 
     @Override

@@ -43,7 +43,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/conscribo_info_icon"
-                    android:id="@+id/rw_info_button" />
+                    android:id="@+id/rw_info_button"
+                    android:background="@null"/>
 
 
             </LinearLayout>
@@ -65,28 +66,35 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/rw_like_button"
                     android:src="@drawable/conscribo_like_icon"
-                    android:elevation="2dp"/>
+                    style="?android:attr/buttonStyleSmall"
+                    android:background="@null"/>
 
                 <ImageButton
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/rw_suscribe_button"
-                    android:src="@drawable/conscribo_suscribe_icon"/>
+                    android:src="@drawable/conscribo_suscribe_icon"
+                    style="?android:attr/buttonStyleSmall"
+                    android:background="@null"/>
 
                 <ImageButton
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/rw_tree_button"
-                    android:src="@drawable/conscribo_tree_icon"/>
+                    android:src="@drawable/conscribo_tree_icon"
+                    style="?android:attr/buttonStyleSmall"
+                    android:background="@null"/>
 
                 <ImageButton
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/conscribo_create_icon"
-                    android:id="@+id/rw_write_button" />
+                    android:id="@+id/rw_write_button"
+                    style="?android:attr/buttonStyleSmall"
+                    android:background="@null"/>
             </LinearLayout>
 
             <TextView
@@ -102,6 +110,13 @@
                 android:ems="10"
                 android:hint="@string/rw_contributor_name_input_hint"
                 android:id="@+id/rw_contribution_author_input" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/read_write_character_count"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/character_count"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

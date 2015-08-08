@@ -82,7 +82,6 @@ public class TreeBranchActivity extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.branches_list);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-//        listView.setSelector( R.drawable.touch_selector);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -160,7 +159,6 @@ public class TreeBranchActivity extends AppCompatActivity {
         mRootBranchNode = new BranchNode(branchesList.get(0));
         parentBranchNodeLookup.put(mRootBranchNode.generateKey(), mRootBranchNode);
 
-        Log.e(LOGTAG, "BranchList size = " + branchesList.size());
         // Iterate through the rest of the branchesList and place them after their parent BranchNode
         for(int i = 1; i < branchesList.size(); i++) {
             BranchNode current = new BranchNode(branchesList.get(i));

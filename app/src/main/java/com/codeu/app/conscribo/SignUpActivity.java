@@ -88,6 +88,8 @@ public class SignUpActivity extends ActionBarActivity {
         user.put("subscribers", new ArrayList<ParseUser>());
         user.put("subscriptions", new ArrayList<StoryTree>());
 
+        user.saveInBackground();
+
 
         // Call the Parse signup method
         user.signUpInBackground(new SignUpCallback() {

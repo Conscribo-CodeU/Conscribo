@@ -10,9 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.codeu.app.conscribo.data.StoryObject;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
+
+import java.util.ArrayList;
 
 
 public class SignUpActivity extends ActionBarActivity {
@@ -75,6 +78,13 @@ public class SignUpActivity extends ActionBarActivity {
         ParseUser user = new ParseUser();
         user.setUsername(username);
         user.setPassword(password);
+
+        /* Initialize User Data */
+        user.put("contributions", new ArrayList<StoryObject>());
+        user.put("likes", 0);
+        user.put("favorites", 0);
+        user.put("subscribers", 0);
+
 
         // Call the Parse signup method
         user.signUpInBackground(new SignUpCallback() {

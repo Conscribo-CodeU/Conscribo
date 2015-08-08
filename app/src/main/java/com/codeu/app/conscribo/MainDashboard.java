@@ -218,6 +218,10 @@ public class MainDashboard extends ActionBarActivity {
             startActivity(new Intent(this, SignUpActivity.class));
             return true;
         }
+        else if (id == R.id.action_profile) {
+            startActivity(new Intent(this, ProfileActivity.class));
+            return true;
+        }
         else if (id == R.id.action_log_out) {
             ParseUser.logOut();
             Intent intent = new Intent(MainDashboard.this, DispatchActivity.class);

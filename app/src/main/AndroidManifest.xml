@@ -77,6 +77,10 @@
             android:name=".DispatchActivity"
             android:label="@string/title_activity_dispatch" >
         </activity>
+        <activity
+            android:name=".ProfileActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
     </application>
 
 </manifest>

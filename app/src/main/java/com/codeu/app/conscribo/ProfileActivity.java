@@ -1,27 +1,39 @@
 package com.codeu.app.conscribo;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import com.parse.ParseUser;
 
-public class ReadWriteStoryActivity extends ActionBarActivity {
+public class ProfileActivity extends AppCompatActivity {
 
-    private boolean hasUser;
+    ParseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_read_write_story);
+        setContentView(R.layout.activity_profile);
 
+        user = ParseUser.getCurrentUser();
+
+        TextView numLikes = (TextView) findViewById(R.id.profile_likes);
+        TextView numFavorites = (TextView) findViewById(R.id.profile_favorites);
+        TextView numSubscribers = (TextView) findViewById(R.id.profile_subscribers);
+
+        numLikes.setText(user.get("likes") + " Likes");
+        numFavorites.setText(user.get("favorites") + " Favorites");
+        numSubscribers.setText(user.get("subscribers") + " Subscribers");
+ 
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_story_mode, menu);
+        getMenuInflater().inflate(R.menu.menu_profile, menu);
         return true;
     }
 

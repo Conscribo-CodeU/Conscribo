@@ -3,6 +3,7 @@ package com.codeu.app.conscribo.data;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.json.JSONArray;
 
@@ -29,13 +30,14 @@ import java.util.List;
  */
 @ParseClassName("StoryObject")
 public class StoryObject extends ParseObject implements Serializable {
-    public void makeStoryObject(String title, String genre, List<String> authors, List<String> sentences, int depth) {
+    public void makeStoryObject(String title, String genre, List<String> authors, List<String> sentences, int depth, ParseUser user) {
         setTitle(title);
         setGenre(genre);
         addSentences(sentences);
         addAuthors(authors);
         setLikes();
         setDepth(depth);
+        setUser(user);
     }
 
     // Setters
@@ -47,6 +49,9 @@ public class StoryObject extends ParseObject implements Serializable {
     }
     public void setTree(ParseObject tree) {
         put("tree", tree);
+    }
+    public void setUser(ParseUser user) {
+        put("user", user);
     }
     public void addSentence(String sentence) {
         add("listSentences", sentence);
@@ -92,6 +97,7 @@ public class StoryObject extends ParseObject implements Serializable {
     public ParseObject getTree() {
         return getParseObject("tree");
     }
+    public ParseUser getUser() {return getParseUser("user");}
     public JSONArray getSentencesJSONArray() {
         return getJSONArray("listSentences");
     }

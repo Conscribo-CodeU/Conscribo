@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.codeu.app.conscribo.data.StoryObject;
 import com.codeu.app.conscribo.data.StoryTree;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,7 +130,8 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
                     StoryTree tree = new StoryTree();
                     tree.makeStoryTree(mTitleEditText.getText().toString(),
                             mGenreSelectedStr,
-                            mCreatorEditText.getText().toString());
+                            mCreatorEditText.getText().toString(),
+                            ParseUser.getCurrentUser().getCurrentUser());
 
                     // Create StoryObject. Set depth to 0.
                     StoryObject story = new StoryObject();
@@ -137,7 +139,8 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
                             mGenreSelectedStr,
                             authorList,
                             sentenceList,
-                            0);
+                            0,
+                            ParseUser.getCurrentUser().getCurrentUser());
                     story.setTree(tree);
 
                     // Save the StoryObject and the StoryTree.
@@ -195,6 +198,10 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
     }
 
     public boolean isValidStorySubmission() {
+        //Safety check for making sure user is logged in
+        if (ParseUser.getCurrentUser() == null) {
+            return false;
+        }
         // Check if creator was filled out correctly
         String creatorString =  mCreatorEditText.getText().toString();
         if (creatorString.length() < 4) {

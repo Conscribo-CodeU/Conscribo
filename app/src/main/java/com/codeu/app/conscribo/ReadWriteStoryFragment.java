@@ -25,6 +25,7 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.json.JSONException;
 
@@ -43,6 +44,8 @@ public class ReadWriteStoryFragment extends Fragment {
     private final String LOGTAG = ReadWriteStoryFragment.class.getSimpleName();
 
     private final String CONSCRIBO_SHARE_HASHTAG = "#ConscriboApp";
+
+    private boolean hasUser;
 
     public ReadWriteStoryFragment() {
         setHasOptionsMenu(true);
@@ -82,6 +85,9 @@ public class ReadWriteStoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        hasUser = Utility.userLoggedIn();
+
         View rootView = inflater.inflate(R.layout.fragment_read_write_story, container, false);
 
         // Retrieve intent and check if there is a Story ID
@@ -183,7 +189,12 @@ public class ReadWriteStoryFragment extends Fragment {
             public void onClick(View v) {
 
                 // Check if the StoryObject has been properly Queried
-                if(mStoryObject == null){
+                if(!hasUser) {
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Please login before branching off of a story",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else if(mStoryObject == null){
                     Log.e(LOGTAG," mStoryObject is null! Couldn't create contribution");
                 } else {
                     // Submit the sentence for a new StoryObject
@@ -228,7 +239,8 @@ public class ReadWriteStoryFragment extends Fragment {
                                     mStoryObject.getGenre(),
                                     authorList,
                                     sentenceList,
-                                    mStoryObject.getDepth() + 1);
+                                    mStoryObject.getDepth() + 1,
+                                    ParseUser.getCurrentUser());
                             newContributionStory.setTree(mStoryObject.getTree());
 
                             newContributionStory.saveInBackground();
@@ -272,4 +284,6 @@ public class ReadWriteStoryFragment extends Fragment {
         storyImage.setImageResource(Utility.findGenreDrawable( story.getGenre()));
         sentencesText.setText(mStoryText);
     }
+
+
 }

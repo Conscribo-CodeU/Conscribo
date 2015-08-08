@@ -19,6 +19,7 @@ public class BranchNode {
         setStory(story);
         setSentence( Utility.getLastStringFromJSONArray( story.getSentencesJSONArray() ) );
         setAuthor( Utility.getLastStringFromJSONArray( story.getAuthorsJSONArray() ) );
+        setUser(story.getUser());
     }
 
     // Setters

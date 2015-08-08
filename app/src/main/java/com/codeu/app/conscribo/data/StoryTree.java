@@ -3,6 +3,7 @@ package com.codeu.app.conscribo.data;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.Date;
 
@@ -22,10 +23,11 @@ import java.util.Date;
 @ParseClassName("StoryTree")
 public class StoryTree extends ParseObject {
 
-    public void makeStoryTree(String title, String genre, String creator){
+    public void makeStoryTree(String title, String genre, String creator, ParseUser user){
         setTitle(title);
         setGenre(genre);
         setCreator(creator);
+        setUser(user);
     }
 
 
@@ -38,6 +40,9 @@ public class StoryTree extends ParseObject {
     }
     public void setCreator(String value) {
         put("creator", value);
+    }
+    public void setUser(ParseUser user) {
+        put("user", user);
     }
 
     // Getters
@@ -56,6 +61,7 @@ public class StoryTree extends ParseObject {
     public Date getCreatedTime() {
         return getCreatedAt();
     }
+    public ParseUser getUser() {return getParseUser("user");}
 
     // Query
     public static ParseQuery<StoryTree> getQuery() {

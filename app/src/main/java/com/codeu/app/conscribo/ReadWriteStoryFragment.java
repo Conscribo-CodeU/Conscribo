@@ -158,7 +158,7 @@ public class ReadWriteStoryFragment extends Fragment {
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!((ArrayList<StoryObject>) user.get("liked")).contains(mStoryObject)) //&& !user.equals(mStoryObject.getUser())) { //mStoryObject.getUser is what is crashing the app
+                if (!((ArrayList<StoryObject>) user.get("liked")).contains(mStoryObject)) { //&& !user.equals(mStoryObject.getUser())) { //mStoryObject.getUser is what is crashing the app
 
                     for (StoryObject item: (ArrayList<StoryObject>) user.get("liked")) {
                         Log.v("TESTING", item.getTitle());

@@ -82,7 +82,8 @@ public class SignUpActivity extends ActionBarActivity {
         /* Initialize User Data */
         user.put("contributions", new ArrayList<StoryObject>());
         user.put("likes", 0);
-        user.put("favorites", 0);
+        user.put("liked", new ArrayList<StoryObject>());
+        user.put("favorites", new ArrayList<StoryObject>());
         user.put("subscribers", 0);
 
 

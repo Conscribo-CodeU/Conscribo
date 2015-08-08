@@ -21,8 +21,4 @@
         android:title="Sign Up"
         android:orderInCategory="100"
         app:showAsAction="never" />
-    <item android:id="@+id/action_log_out"
-        android:title="Log Out"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
 </menu>

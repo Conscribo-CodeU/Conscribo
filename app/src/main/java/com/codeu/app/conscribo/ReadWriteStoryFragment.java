@@ -29,6 +29,7 @@ import com.parse.ParseUser;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -40,6 +41,7 @@ public class ReadWriteStoryFragment extends Fragment {
     private String mStoryId;
     private StoryObject mStoryObject;
     private static String mStoryText;
+    private ParseUser user;
 
     private final String LOGTAG = ReadWriteStoryFragment.class.getSimpleName();
 
@@ -58,6 +60,8 @@ public class ReadWriteStoryFragment extends Fragment {
 
         // Retrieve the share menu item
         MenuItem menuItem = menu.findItem(R.id.action_share);
+
+        user = ParseUser.getCurrentUser();
 
         // Get the provider and hold onto it to set/change the share intent.
         ShareActionProvider mShareActionProvider =
@@ -153,8 +157,11 @@ public class ReadWriteStoryFragment extends Fragment {
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mStoryObject.getUser().put("likes", (int) mStoryObject.getUser().get("likes") + 1); //Need to delete the other stories. ALso need to test if this affects all author's likes
-                mStoryObject.addLike();
+                if (!((ArrayList<StoryObject>) user.get("liked")).contains(mStoryObject)) {
+                    mStoryObject.getUser().put("likes", (int) mStoryObject.getUser().get("likes") + 1); //Need to delete the other stories. ALso need to test if this affects all author's likes
+                    mStoryObject.addLike();
+                    user.add("liked", mStoryObject);
+                }
             }
         });
 

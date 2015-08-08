@@ -6,7 +6,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.codeu.app.conscribo.data.StoryObject;
 import com.parse.ParseUser;
+
+import java.util.ArrayList;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -26,7 +29,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         username.setText(user.getUsername());
         numLikes.setText(user.get("likes") + " Likes");
-        numFavorites.setText(user.get("favorites") + " Favorites");
+        numFavorites.setText(((ArrayList<StoryObject>) user.get("favorites")).size() + " Favorites");
         numSubscribers.setText(user.get("subscribers") + " Subscribers");
 
     }

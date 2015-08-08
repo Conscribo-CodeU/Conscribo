@@ -2,6 +2,8 @@ package com.codeu.app.conscribo;
 
 import android.util.Log;
 
+import com.parse.ParseUser;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -105,5 +107,9 @@ public class Utility {
         }
 
         return stringList;
+    }
+
+    public static boolean userLoggedIn() {
+        return ParseUser.getCurrentUser() != null;
     }
 }

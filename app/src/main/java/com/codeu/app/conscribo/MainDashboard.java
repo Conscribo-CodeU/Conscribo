@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.codeu.app.conscribo.data.StoryObject;
 import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
+import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -35,6 +36,9 @@ public class MainDashboard extends ActionBarActivity implements ActionBar.TabLis
     private Activity self;
 
     final private String LOGTAG = MainDashboard.class.getSimpleName();
+
+    //Static variable to maintain that the user is logged in throughout all new calls to MainDashboard
+    private static boolean hasUser = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +63,7 @@ public class MainDashboard extends ActionBarActivity implements ActionBar.TabLis
 
         // Set up click listener on list items to save the selected StoryObjects
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView< ?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 mSelectedStory = mParseQueryAdapter.getItem(position);
             }
@@ -72,7 +76,7 @@ public class MainDashboard extends ActionBarActivity implements ActionBar.TabLis
             public void onClick(View v) {
 
                 // Place story name in extra of Intent and send to activity
-                if(mSelectedStory != null) {
+                if (mSelectedStory != null) {
                     Intent i = new Intent(self, ReadWriteStoryActivity.class);
                     i.putExtra("selectedStoryId", mSelectedStory.getObjectId());
                     startActivity(i);
@@ -80,8 +84,9 @@ public class MainDashboard extends ActionBarActivity implements ActionBar.TabLis
                     // Tell user to select a story first
                     Toast.makeText(getApplicationContext(),
                             "Please select a story",
-                            Toast.LENGTH_SHORT ).show();
+                            Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 
@@ -89,7 +94,15 @@ public class MainDashboard extends ActionBarActivity implements ActionBar.TabLis
         tempCreateStoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(self, CreateStoryActivity.class));
+                if (hasUser) {
+                    startActivity(new Intent(self, CreateStoryActivity.class));
+                }
+                else {
+                    //Cannot do action until user is logged in.
+                    Toast.makeText(getApplicationContext(),
+                            "Please login before creating a new story",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -164,6 +177,7 @@ public class MainDashboard extends ActionBarActivity implements ActionBar.TabLis
 
                 //  Set the content based on the story
                 titleView.setText(story.getTitle());
+
                 authorView.setText( Utility.getLastStringFromJSONArray(story.getAuthorsJSONArray()));
                 likesView.setText(Integer.toString(story.getLikes()) +  " likes" );
                 genreImage.setImageResource( Utility.findGenreDrawable( story.getGenre() ) );
@@ -192,7 +206,13 @@ public class MainDashboard extends ActionBarActivity implements ActionBar.TabLis
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        if (hasUser) {
+            getMenuInflater().inflate(R.menu.menu_logged_in_main, menu);
+        }
+        else {
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+        }
+
         return true;
     }
 
@@ -220,6 +240,21 @@ public class MainDashboard extends ActionBarActivity implements ActionBar.TabLis
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
+        else if (id == R.id.action_sign_up) {
+            startActivity(new Intent(this, SignUpActivity.class));
+            return true;
+        }
+        else if (id == R.id.action_profile) {
+            startActivity(new Intent(this, ProfileActivity.class));
+            return true;
+        }
+        else if (id == R.id.action_log_out) {
+            ParseUser.logOut();
+            Intent intent = new Intent(MainDashboard.this, DispatchActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -231,6 +266,15 @@ public class MainDashboard extends ActionBarActivity implements ActionBar.TabLis
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        hasUser = Utility.userLoggedIn();
+
+        //Test whether logging in and logging out works.
+        //Log.v("Logged in:", "User logged in is " + hasUser);
+    }
+
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
 
     }

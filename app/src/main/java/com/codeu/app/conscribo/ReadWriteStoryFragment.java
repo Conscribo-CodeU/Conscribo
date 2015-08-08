@@ -21,13 +21,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codeu.app.conscribo.data.StoryObject;
+import com.codeu.app.conscribo.data.StoryTree;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,10 +42,13 @@ public class ReadWriteStoryFragment extends Fragment {
     private String mStoryId;
     private StoryObject mStoryObject;
     private static String mStoryText;
+    private ParseUser user;
 
     private final String LOGTAG = ReadWriteStoryFragment.class.getSimpleName();
 
     private final String CONSCRIBO_SHARE_HASHTAG = "#ConscriboApp";
+
+    private boolean hasUser;
 
     public ReadWriteStoryFragment() {
         setHasOptionsMenu(true);
@@ -55,6 +61,8 @@ public class ReadWriteStoryFragment extends Fragment {
 
         // Retrieve the share menu item
         MenuItem menuItem = menu.findItem(R.id.action_share);
+
+        user = ParseUser.getCurrentUser();
 
         // Get the provider and hold onto it to set/change the share intent.
         ShareActionProvider mShareActionProvider =
@@ -82,6 +90,9 @@ public class ReadWriteStoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        hasUser = Utility.userLoggedIn();
+
         View rootView = inflater.inflate(R.layout.fragment_read_write_story, container, false);
 
         // Retrieve intent and check if there is a Story ID
@@ -147,13 +158,35 @@ public class ReadWriteStoryFragment extends Fragment {
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!((ArrayList<StoryObject>) user.get("liked")).contains(mStoryObject)) { //&& !user.equals(mStoryObject.getUser())) { //mStoryObject.getUser is what is crashing the app
 
+                    for (StoryObject item: (ArrayList<StoryObject>) user.get("liked")) {
+                        Log.v("TESTING", item.getTitle());
+                    }
+
+                    //int numLikes = mStoryObject.getUser().getInt("likes") + 1;
+                    mStoryObject.getUser().increment("likes"); //Need to delete the other stories. ALso need to test if this affects all author's likes
+                    mStoryObject.addLike();
+                    user.add("liked", mStoryObject);
+
+                    user.saveInBackground();
+                }
             }
         });
 
         subcribeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!((ArrayList<ParseUser>) mStoryObject.getUser().get("subscribers")).contains(user)) {
+                    mStoryObject.getUser().add("subscribers", user);
+                }
+                if (!((ArrayList<StoryTree>) user.get("subscriptions")).contains(mStoryObject.getTree())){
+                    user.add("subscriptions", mStoryObject.getTree());
+                }
+
+                //Error handling in the method.
+                //((StoryTree) mStoryObject.getTree()).addSubscriber(user);
+
 
             }
         });
@@ -183,7 +216,12 @@ public class ReadWriteStoryFragment extends Fragment {
             public void onClick(View v) {
 
                 // Check if the StoryObject has been properly Queried
-                if(mStoryObject == null){
+                if(!hasUser) {
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Please login before branching off of a story",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else if(mStoryObject == null){
                     Log.e(LOGTAG," mStoryObject is null! Couldn't create contribution");
                 } else {
                     // Submit the sentence for a new StoryObject
@@ -223,7 +261,8 @@ public class ReadWriteStoryFragment extends Fragment {
                                     convertJSONArrayToStringArrayList( mStoryObject.getAuthorsJSONArray() );
                             // Add space between previous period and added sentence
                             sentenceList.add(" " + sentence);
-                            authorList.add( author );
+                            //authorList.add( author );
+                            authorList.add(ParseUser.getCurrentUser().getUsername());
 
                             // Create the contributor's StoryObject
                             StoryObject newContributionStory = new StoryObject();
@@ -231,7 +270,8 @@ public class ReadWriteStoryFragment extends Fragment {
                                     mStoryObject.getGenre(),
                                     authorList,
                                     sentenceList,
-                                    mStoryObject.getDepth() + 1);
+                                    mStoryObject.getDepth() + 1,
+                                    ParseUser.getCurrentUser());
                             newContributionStory.setTree(mStoryObject.getTree());
 
                             newContributionStory.saveInBackground();
@@ -266,7 +306,9 @@ public class ReadWriteStoryFragment extends Fragment {
         TextView likesText = (TextView) getActivity().findViewById(R.id.rw_likes);
 
         // Save the story so it can be shared
+
         mStoryText = Utility.generateStringFromJSONArray(story.getSentencesJSONArray());
+
         Log.e(LOGTAG, "Set mStoryText to: " + mStoryText);
 
         titleText.setText(story.getTitle());
@@ -275,4 +317,6 @@ public class ReadWriteStoryFragment extends Fragment {
         sentencesText.setText(mStoryText);
         likesText.setText(story.getLikes() + " likes");
     }
+
+
 }

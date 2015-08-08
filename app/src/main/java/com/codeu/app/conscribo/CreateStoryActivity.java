@@ -1,5 +1,6 @@
 package com.codeu.app.conscribo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.codeu.app.conscribo.data.StoryObject;
 import com.codeu.app.conscribo.data.StoryTree;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,11 +43,15 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
     private EditText mSentenceEditText;
     private TextView mCharacterCountTextView;
 
+    ParseUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_story);
+
+        user = ParseUser.getCurrentUser();
 
         // Find and set EditText members for user text input lookup
         mCreatorEditText = (EditText) findViewById(R.id.create_story_username);
@@ -90,7 +96,7 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_create_story, menu);
+        getMenuInflater().inflate(R.menu.menu_logged_in_main, menu);
         return true;
     }
 
@@ -102,7 +108,23 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_help) {
+            startActivity(new Intent(this, HelpActivity.class));
+            return true;
+        }
+        else if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
+        else if (id == R.id.action_profile) {
+            startActivity(new Intent(this, ProfileActivity.class));
+            return true;
+        }
+        else if (id == R.id.action_log_out) {
+            ParseUser.logOut();
+            Intent intent = new Intent(this, DispatchActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
             return true;
         }
 
@@ -117,20 +139,22 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
             public void onClick(View v) {
 
                 // Check if the submission is valid and then Create Parse Object and save
-                if(isValidStorySubmission()) {
+                if (isValidStorySubmission()) {
 
                     // Create ArrayList of sentences and authors
                     List<String> sentenceList = new ArrayList<String>();
                     List<String> authorList = new ArrayList<String>();
 
                     sentenceList.add(mSentenceEditText.getText().toString());
-                    authorList.add(mCreatorEditText.getText().toString());
+                    //authorList.add(mCreatorEditText.getText().toString());
+                    authorList.add(ParseUser.getCurrentUser().getUsername());
 
                     // Create StoryTree
                     StoryTree tree = new StoryTree();
                     tree.makeStoryTree(mTitleEditText.getText().toString(),
                             mGenreSelectedStr,
-                            mCreatorEditText.getText().toString());
+                            mCreatorEditText.getText().toString(),
+                            ParseUser.getCurrentUser());
 
                     // Create StoryObject. Set depth to 0.
                     StoryObject story = new StoryObject();
@@ -138,12 +162,16 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
                             mGenreSelectedStr,
                             authorList,
                             sentenceList,
-                            0);
+                            0,
+                            ParseUser.getCurrentUser());
                     story.setTree(tree);
 
                     // Save the StoryObject and the StoryTree.
                     // ***NOTE: Saving the StoryObject will save both the StoryObject and StoryTree.
                     story.saveInBackground();
+
+                    //Adds to the user's contributions to be pulled from the profile page.
+                    user.add("contributions", story);
 
                     /*
                     // Test to see if you can query a StoryObject based on its tree
@@ -196,6 +224,10 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
     }
 
     public boolean isValidStorySubmission() {
+        //Safety check for making sure user is logged in
+        if (ParseUser.getCurrentUser() == null) {
+            return false;
+        }
         // Check if creator was filled out correctly
         String creatorString =  mCreatorEditText.getText().toString();
         if (creatorString.length() < 4) {

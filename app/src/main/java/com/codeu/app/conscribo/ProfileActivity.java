@@ -2,33 +2,45 @@ package com.codeu.app.conscribo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.codeu.app.conscribo.data.StoryObject;
+import com.codeu.app.conscribo.data.StoryTree;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 
-public class ReadWriteStoryActivity extends ActionBarActivity {
+public class ProfileActivity extends AppCompatActivity {
 
-    private boolean hasUser;
-    private EditText mContributionSentenceEditText;
+    ParseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_read_write_story);
+        setContentView(R.layout.activity_profile);
+
+        user = ParseUser.getCurrentUser();
+
+        TextView username = (TextView) findViewById(R.id.profile_username);
+        TextView numLikes = (TextView) findViewById(R.id.profile_likes);
+        TextView numFavorites = (TextView) findViewById(R.id.profile_favorites);
+        TextView numSubscribers = (TextView) findViewById(R.id.profile_subscribers);
+
+        ListView selectedList = (ListView) findViewById(R.id.profile_list);
+
+        ArrayList<StoryObject> contributions = (ArrayList<StoryObject>) user.get("contributions");
+        ArrayList<StoryTree> subscriptions = (ArrayList<StoryTree>) user.get("subscriptions");
+
+        username.setText(user.getUsername());
+        numLikes.setText(user.get("likes") + " Likes");
+        numFavorites.setText(((ArrayList<StoryObject>) user.get("favorites")).size() + " Favorites");
+        numSubscribers.setText(((ArrayList<StoryObject>) user.get("subscribers")).size() + " Subscribers");
 
     }
-
-    private void updateCharacterCountTextViewText(){
-        String updatedCharacterCount = String.format("%d/150 characters",
-                mContributionSentenceEditText.getText().toString().length());
-        mContributionSentenceEditText.setText(updatedCharacterCount);
-
-    }
-
 
 
     @Override
@@ -46,7 +58,6 @@ public class ReadWriteStoryActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-
         if (id == R.id.action_help) {
             startActivity(new Intent(this, HelpActivity.class));
             return true;

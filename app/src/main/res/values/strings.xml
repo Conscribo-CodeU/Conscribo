@@ -31,6 +31,7 @@
     <string name="create_story_tree_button">Create</string>
     <string name="discover_button">Discover</string>
     <string name="read_button">Read</string>
+    <string name="new_tab">New</string>
 
     <!-- Main Story List Item -->
     <string name="list_story_image_description">This is a picture of the story.</string>
@@ -47,7 +48,7 @@
         <item>Western</item>
         <item>Other</item>
     </array>
-    <string name="character_count">0 characters</string>
+    <string name="character_count">0/150 characters</string>
     <string name="create_story">CreateStory</string>
     <string name="title_activity_create_story">Create Story Tree</string>
     <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>

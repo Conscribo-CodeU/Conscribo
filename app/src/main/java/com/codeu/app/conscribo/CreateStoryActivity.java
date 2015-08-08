@@ -33,6 +33,7 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
     final private int NULL_GENRE = 4;
     final private int NULL_SENTENCE = 5;
     final private int INVALID_SENTENCE = 6;
+    final private int LONG_SENTENCE = 7;
 
     private String mGenreSelectedStr;
     private EditText mCreatorEditText;
@@ -81,7 +82,7 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
     }
 
     private void updateCharacterCountTextViewText() {
-        String updatedCharacterCount = String.format("%d characters",
+        String updatedCharacterCount = String.format("%d/150 characters",
                 mSentenceEditText.getText().toString().length());
         mCharacterCountTextView.setText(updatedCharacterCount);
     }
@@ -217,10 +218,16 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
             return false;
         }
 
-        // Check if the sentence is appropriate
+        // Check if the sentence has end
         String sentenceInput = mSentenceEditText.getText().toString();
         if (!Utility.hasSentenceEnd(sentenceInput)) {
             displaySubmissionErrorToast(INVALID_SENTENCE);
+            return false;
+        }
+
+        // Check if sentence is under 150 characters
+        if (sentenceInput.length() > 150) {
+            displaySubmissionErrorToast(LONG_SENTENCE);
             return false;
         }
 
@@ -277,6 +284,9 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
                 break;
             case INVALID_SENTENCE:
                 submissionError = "Please finish your sentence";
+                break;
+            case LONG_SENTENCE:
+                submissionError = "Keep your sentence under 150 characters";
                 break;
             default:
                 submissionError = "Submission error!";

@@ -197,12 +197,15 @@ public class ReadWriteStoryFragment extends Fragment {
                     String sentence = sentenceInput.getText().toString();
                     String author = authorInput.getText().toString();
 
+                    // Check if the submission is valid and show the appropriate Toast
                     if(author.length() < 4){
                         Toast.makeText(context, "Author's name must be at least 4 characters",
                                 Toast.LENGTH_SHORT).show();
-
                     } else if( !Utility.hasSentenceEnd(sentence)) {
                         Toast.makeText(context, "Please finish your sentence",
+                                Toast.LENGTH_SHORT).show();
+                    } else if(sentence.length() > 150) {
+                        Toast.makeText(context, "Keep your sentence under 150 characters",
                                 Toast.LENGTH_SHORT).show();
                     } else {
 

@@ -1,12 +1,15 @@
 package com.codeu.app.conscribo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.codeu.app.conscribo.data.StoryObject;
+import com.codeu.app.conscribo.data.StoryTree;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -27,10 +30,15 @@ public class ProfileActivity extends AppCompatActivity {
         TextView numFavorites = (TextView) findViewById(R.id.profile_favorites);
         TextView numSubscribers = (TextView) findViewById(R.id.profile_subscribers);
 
+        ListView selectedList = (ListView) findViewById(R.id.profile_list);
+
+        ArrayList<StoryObject> contributions = (ArrayList<StoryObject>) user.get("contributions");
+        ArrayList<StoryTree> subscriptions = (ArrayList<StoryTree>) user.get("subscriptions");
+
         username.setText(user.getUsername());
         numLikes.setText(user.get("likes") + " Likes");
         numFavorites.setText(((ArrayList<StoryObject>) user.get("favorites")).size() + " Favorites");
-        numSubscribers.setText(user.get("subscribers") + " Subscribers");
+        numSubscribers.setText(((ArrayList<StoryObject>) user.get("subscribers")).size() + " Subscribers");
 
     }
 
@@ -38,7 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_profile, menu);
+        getMenuInflater().inflate(R.menu.menu_logged_in_main, menu);
         return true;
     }
 
@@ -50,7 +58,23 @@ public class ProfileActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_help) {
+            startActivity(new Intent(this, HelpActivity.class));
+            return true;
+        }
+        else if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
+        else if (id == R.id.action_profile) {
+            startActivity(new Intent(this, ProfileActivity.class));
+            return true;
+        }
+        else if (id == R.id.action_log_out) {
+            ParseUser.logOut();
+            Intent intent = new Intent(this, DispatchActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
             return true;
         }
 

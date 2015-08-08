@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.codeu.app.conscribo.data.StoryObject;
+import com.codeu.app.conscribo.data.StoryTree;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -84,7 +85,8 @@ public class SignUpActivity extends ActionBarActivity {
         user.put("likes", 0);
         user.put("liked", new ArrayList<StoryObject>());
         user.put("favorites", new ArrayList<StoryObject>());
-        user.put("subscribers", 0);
+        user.put("subscribers", new ArrayList<ParseUser>());
+        user.put("subscriptions", new ArrayList<StoryTree>());
 
 
         // Call the Parse signup method
@@ -106,13 +108,6 @@ public class SignUpActivity extends ActionBarActivity {
             }
         });
 
-        /* Set-Up for what the User data model should have */
-
-        /*
-        user.put("likes", "0");
-        user.add("favorites", null);
-
-        */
 
     }
 

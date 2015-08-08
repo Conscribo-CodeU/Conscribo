@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codeu.app.conscribo.data.StoryObject;
+import com.codeu.app.conscribo.data.StoryTree;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -157,7 +158,7 @@ public class ReadWriteStoryFragment extends Fragment {
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!((ArrayList<StoryObject>) user.get("liked")).contains(mStoryObject)) {
+                if (!((ArrayList<StoryObject>) user.get("liked")).contains(mStoryObject) && !user.equals(mStoryObject.getUser())) {
                     mStoryObject.getUser().put("likes", (int) mStoryObject.getUser().get("likes") + 1); //Need to delete the other stories. ALso need to test if this affects all author's likes
                     mStoryObject.addLike();
                     user.add("liked", mStoryObject);
@@ -168,7 +169,17 @@ public class ReadWriteStoryFragment extends Fragment {
         subcribeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mStoryObject.getUser().put("subscribers", (int) mStoryObject.getUser().get("subscribers") + 1);
+                if (!((ArrayList<ParseUser>) mStoryObject.getUser().get("subscribers")).contains(user)) {
+                    mStoryObject.getUser().add("subscribers", user);
+                }
+                if (!((ArrayList<StoryTree>) user.get("subscriptions")).contains(mStoryObject.getTree())){
+                    user.add("subscriptions", mStoryObject.getTree());
+                }
+
+                //Error handling in the method.
+                ((StoryTree) mStoryObject.getTree()).addSubscriber(user);
+
+
             }
         });
 

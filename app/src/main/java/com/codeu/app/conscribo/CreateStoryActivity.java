@@ -42,11 +42,15 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
     private EditText mSentenceEditText;
     private TextView mCharacterCountTextView;
 
+    ParseUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_story);
+
+        user = ParseUser.getCurrentUser();
 
         // Find and set EditText members for user text input lookup
         mCreatorEditText = (EditText) findViewById(R.id.create_story_username);
@@ -164,6 +168,9 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
                     // Save the StoryObject and the StoryTree.
                     // ***NOTE: Saving the StoryObject will save both the StoryObject and StoryTree.
                     story.saveInBackground();
+
+                    //Adds to the user's contributions to be pulled from the profile page.
+                    user.add("contributions", story);
 
                     /*
                     // Test to see if you can query a StoryObject based on its tree

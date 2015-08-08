@@ -38,13 +38,11 @@
                         android:id="@+id/rw_author_text" />
                 </LinearLayout>
 
-                <ImageButton
-                    style="?android:attr/buttonStyleSmall"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/conscribo_info_icon"
-                    android:id="@+id/rw_info_button"
-                    android:background="@null"/>
+                    android:id="@+id/rw_likes"
+                    android:textAppearance="?android:attr/textAppearanceSmall"/>
 
 
             </LinearLayout>

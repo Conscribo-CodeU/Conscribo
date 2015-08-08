@@ -263,6 +263,7 @@ public class ReadWriteStoryFragment extends Fragment {
         TextView authorText = (TextView) getActivity().findViewById(R.id.rw_author_text);
         ImageView storyImage = (ImageView) getActivity().findViewById(R.id.rw_story_image);
         TextView sentencesText = (TextView) getActivity().findViewById(R.id.rw_sentences_text);
+        TextView likesText = (TextView) getActivity().findViewById(R.id.rw_likes);
 
         // Save the story so it can be shared
         mStoryText = Utility.generateStringFromJSONArray(story.getSentencesJSONArray());
@@ -272,5 +273,6 @@ public class ReadWriteStoryFragment extends Fragment {
         authorText.setText(Utility.getLastStringFromJSONArray(story.getAuthorsJSONArray()) );
         storyImage.setImageResource(Utility.findGenreDrawable( story.getGenre()));
         sentencesText.setText(mStoryText);
+        likesText.setText(story.getLikes() + " likes");
     }
 }

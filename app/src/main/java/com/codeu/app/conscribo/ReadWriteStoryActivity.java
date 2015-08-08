@@ -1,9 +1,12 @@
 package com.codeu.app.conscribo;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.parse.ParseUser;
 
 
 public class ReadWriteStoryActivity extends ActionBarActivity {
@@ -21,7 +24,7 @@ public class ReadWriteStoryActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_story_mode, menu);
+        getMenuInflater().inflate(R.menu.menu_logged_in_main, menu);
         return true;
     }
 
@@ -33,7 +36,24 @@ public class ReadWriteStoryActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+
+        if (id == R.id.action_help) {
+            startActivity(new Intent(this, HelpActivity.class));
+            return true;
+        }
+        else if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
+        else if (id == R.id.action_profile) {
+            startActivity(new Intent(this, ProfileActivity.class));
+            return true;
+        }
+        else if (id == R.id.action_log_out) {
+            ParseUser.logOut();
+            Intent intent = new Intent(this, DispatchActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
             return true;
         }
 

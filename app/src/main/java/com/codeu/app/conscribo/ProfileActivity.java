@@ -19,14 +19,16 @@ public class ProfileActivity extends AppCompatActivity {
 
         user = ParseUser.getCurrentUser();
 
+        TextView username = (TextView) findViewById(R.id.profile_username);
         TextView numLikes = (TextView) findViewById(R.id.profile_likes);
         TextView numFavorites = (TextView) findViewById(R.id.profile_favorites);
         TextView numSubscribers = (TextView) findViewById(R.id.profile_subscribers);
 
+        username.setText(user.getUsername());
         numLikes.setText(user.get("likes") + " Likes");
         numFavorites.setText(user.get("favorites") + " Favorites");
         numSubscribers.setText(user.get("subscribers") + " Subscribers");
- 
+
     }
 
 

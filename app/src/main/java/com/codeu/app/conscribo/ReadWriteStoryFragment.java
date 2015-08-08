@@ -153,14 +153,15 @@ public class ReadWriteStoryFragment extends Fragment {
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                mStoryObject.getUser().put("likes", (int) mStoryObject.getUser().get("likes") + 1); //Need to delete the other stories. ALso need to test if this affects all author's likes
+                mStoryObject.addLike();
             }
         });
 
         subcribeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                mStoryObject.getUser().put("subscribers", (int) mStoryObject.getUser().get("subscribers") + 1);
             }
         });
 
@@ -231,7 +232,8 @@ public class ReadWriteStoryFragment extends Fragment {
                                     convertJSONArrayToStringArrayList( mStoryObject.getAuthorsJSONArray() );
                             // Add space between previous period and added sentence
                             sentenceList.add(" " + sentence);
-                            authorList.add( author );
+                            //authorList.add( author );
+                            authorList.add(ParseUser.getCurrentUser().getUsername());
 
                             // Create the contributor's StoryObject
                             StoryObject newContributionStory = new StoryObject();

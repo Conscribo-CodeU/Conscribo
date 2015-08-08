@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:id="@+id/imageButton"
-                android:layout_weight="0.3" />
+                android:layout_weight="0.35" />
 
             <LinearLayout
                 android:orientation="vertical"
@@ -88,6 +88,21 @@
                 android:id="@+id/profile_subscriptions"
                 android:layout_weight="0.5" />
         </LinearLayout>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="221dp"
+            android:id="@+id/listView"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.83" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Change Password Here"
+            android:id="@+id/textView14"
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 </RelativeLayout>

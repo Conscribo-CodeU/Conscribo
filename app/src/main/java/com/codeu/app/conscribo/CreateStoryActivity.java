@@ -1,5 +1,6 @@
 package com.codeu.app.conscribo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
@@ -90,7 +91,7 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_create_story, menu);
+        getMenuInflater().inflate(R.menu.menu_logged_in_main, menu);
         return true;
     }
 
@@ -102,7 +103,23 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_help) {
+            startActivity(new Intent(this, HelpActivity.class));
+            return true;
+        }
+        else if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
+        else if (id == R.id.action_profile) {
+            startActivity(new Intent(this, ProfileActivity.class));
+            return true;
+        }
+        else if (id == R.id.action_log_out) {
+            ParseUser.logOut();
+            Intent intent = new Intent(this, DispatchActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
             return true;
         }
 
@@ -117,21 +134,22 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
             public void onClick(View v) {
 
                 // Check if the submission is valid and then Create Parse Object and save
-                if(isValidStorySubmission()) {
+                if (isValidStorySubmission()) {
 
                     // Create ArrayList of sentences and authors
                     List<String> sentenceList = new ArrayList<String>();
                     List<String> authorList = new ArrayList<String>();
 
                     sentenceList.add(mSentenceEditText.getText().toString());
-                    authorList.add(mCreatorEditText.getText().toString());
+                    //authorList.add(mCreatorEditText.getText().toString());
+                    authorList.add(ParseUser.getCurrentUser().getUsername());
 
                     // Create StoryTree
                     StoryTree tree = new StoryTree();
                     tree.makeStoryTree(mTitleEditText.getText().toString(),
                             mGenreSelectedStr,
                             mCreatorEditText.getText().toString(),
-                            ParseUser.getCurrentUser().getCurrentUser());
+                            ParseUser.getCurrentUser());
 
                     // Create StoryObject. Set depth to 0.
                     StoryObject story = new StoryObject();
@@ -140,7 +158,7 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
                             authorList,
                             sentenceList,
                             0,
-                            ParseUser.getCurrentUser().getCurrentUser());
+                            ParseUser.getCurrentUser());
                     story.setTree(tree);
 
                     // Save the StoryObject and the StoryTree.

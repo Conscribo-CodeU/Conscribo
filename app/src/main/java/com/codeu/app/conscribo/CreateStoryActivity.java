@@ -38,7 +38,7 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
     final private int LONG_SENTENCE = 7;
 
     private String mGenreSelectedStr;
-    private EditText mCreatorEditText;
+    private String mCreator;
     private EditText mTitleEditText;
     private EditText mSentenceEditText;
     private TextView mCharacterCountTextView;
@@ -52,9 +52,8 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
         setContentView(R.layout.activity_create_story);
 
         user = ParseUser.getCurrentUser();
+        mCreator = ParseUser.getCurrentUser().getUsername();
 
-        // Find and set EditText members for user text input lookup
-        mCreatorEditText = (EditText) findViewById(R.id.create_story_username);
         mTitleEditText = (EditText) findViewById(R.id.create_story_title);
         mSentenceEditText = (EditText) findViewById(R.id.create_story_sentence);
         mCharacterCountTextView = (TextView) findViewById(R.id.create_story_character_count);
@@ -146,14 +145,13 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
                     List<String> authorList = new ArrayList<String>();
 
                     sentenceList.add(mSentenceEditText.getText().toString());
-                    //authorList.add(mCreatorEditText.getText().toString());
-                    authorList.add(ParseUser.getCurrentUser().getUsername());
+                    authorList.add(mCreator);
 
                     // Create StoryTree
                     StoryTree tree = new StoryTree();
                     tree.makeStoryTree(mTitleEditText.getText().toString(),
                             mGenreSelectedStr,
-                            mCreatorEditText.getText().toString(),
+                            mCreator,
                             ParseUser.getCurrentUser());
 
                     // Create StoryObject. Set depth to 0.
@@ -226,12 +224,6 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
     public boolean isValidStorySubmission() {
         //Safety check for making sure user is logged in
         if (ParseUser.getCurrentUser() == null) {
-            return false;
-        }
-        // Check if creator was filled out correctly
-        String creatorString =  mCreatorEditText.getText().toString();
-        if (creatorString.length() < 4) {
-            displaySubmissionErrorToast(SHORT_CREATOR);
             return false;
         }
 

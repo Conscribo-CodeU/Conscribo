@@ -9,15 +9,6 @@
     android:orientation="vertical"
     tools:context="com.codeu.app.conscribo.CreateStoryActivity">
 
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/create_story_username"
-        android:layout_gravity="center_horizontal"
-        android:hint="@string/creator"
-        android:inputType="textCapSentences"/>
-
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

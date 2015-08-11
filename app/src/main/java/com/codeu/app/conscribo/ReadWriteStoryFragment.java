@@ -152,6 +152,7 @@ public class ReadWriteStoryFragment extends Fragment {
         ImageButton treeButton = (ImageButton)      rootView.findViewById(R.id.rw_tree_button);
         ImageButton writeButton = (ImageButton)     rootView.findViewById(R.id.rw_write_button);
         Button submitButton = (Button)              rootView.findViewById(R.id.rw_sentence_submit);
+        TextView usernameText = (TextView)              rootView.findViewById(R.id.rw_author_text);
 
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,7 +189,6 @@ public class ReadWriteStoryFragment extends Fragment {
 
                 //Error handling in the method.
                 //((StoryTree) mStoryObject.getTree()).addSubscriber(user);
-
 
             }
         });
@@ -231,11 +231,9 @@ public class ReadWriteStoryFragment extends Fragment {
 
                     EditText sentenceInput = (EditText) context
                             .findViewById(R.id.rw_setence_input);
-                    EditText authorInput = (EditText) context
-                            .findViewById(R.id.rw_contribution_author_input);
 
                     String sentence = sentenceInput.getText().toString();
-                    String author = authorInput.getText().toString();
+                    String author = ParseUser.getCurrentUser().getUsername();
 
                     // Check if the submission is valid and show the appropriate Toast
                     if(author.length() < 4){
@@ -293,6 +291,22 @@ public class ReadWriteStoryFragment extends Fragment {
                         }
                     }
                 }
+            }
+        });
+
+        usernameText.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(mStoryObject != null) {
+
+                    // Start ProfileActivity
+                    Intent profileIntent = new Intent(getActivity(), ProfileActivity.class);
+                    profileIntent.putExtra("userObjectId", mStoryObject.getUser().getObjectId());
+                    startActivity(profileIntent);
+
+
+                }
+
             }
         });
     }

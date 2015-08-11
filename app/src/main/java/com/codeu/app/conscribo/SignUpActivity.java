@@ -53,6 +53,14 @@ public class SignUpActivity extends ActionBarActivity {
             validationError = true;
             validationErrorMessage.append("Invalid Sign Up - Username length is 0");
         }
+        if (username.length() < 4) {
+            validationError = true;
+            validationErrorMessage.append("Username must be at least 4 characters");
+        }
+        if (username.length() > 16) {
+            validationError = true;
+            validationErrorMessage.append("Username must be at most 16 characters");
+        }
         if (password.length() == 0) {
             if (validationError) {
                 validationErrorMessage.append("Invalid Sign Up - Password length is 0");

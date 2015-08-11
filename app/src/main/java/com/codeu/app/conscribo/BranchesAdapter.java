@@ -48,7 +48,12 @@ public class BranchesAdapter extends ArrayAdapter<BranchNode> {
 
         // Set the text of list_item to the branch sentence
         TextView branchSentence = (TextView) convertView.findViewById(R.id.sentence_branch_text);
+        TextView branchAuthor = (TextView) convertView.findViewById(R.id.branch_author_text);
+        TextView branchLikes = (TextView) convertView.findViewById(R.id.branch_num_likes);
+
         branchSentence.setText(branch.getSentence());
+        branchAuthor.setText(branch.getAuthor());
+        branchLikes.setText(branch.getLikes() + " likes");
 
         /*
         * The root branch should be left as is.

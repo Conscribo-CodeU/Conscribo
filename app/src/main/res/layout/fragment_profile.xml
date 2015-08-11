@@ -25,7 +25,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:id="@+id/imageButton"
-                android:layout_weight="0.35" />
+                android:layout_weight="0.35"
+                android:background="@null"
+                android:src="@drawable/conscribo_profile_icon"/>
 
             <LinearLayout
                 android:orientation="vertical"
@@ -45,7 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Num Likes"
+                    android:text="0 Likes"
                     android:id="@+id/profile_likes"
                     android:layout_gravity="center_horizontal" />
 
@@ -53,7 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Num Favorites"
+                    android:text="0 Favorites"
                     android:id="@+id/profile_favorites"
                     android:layout_gravity="center_horizontal" />
 
@@ -61,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Num Subscribers"
+                    android:text="0 Subscribers"
                     android:id="@+id/profile_subscribers"
                     android:layout_gravity="center_horizontal" />
             </LinearLayout>

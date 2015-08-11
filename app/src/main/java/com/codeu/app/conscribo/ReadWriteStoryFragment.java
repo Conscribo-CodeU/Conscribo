@@ -146,8 +146,11 @@ public class ReadWriteStoryFragment extends Fragment {
     }
 
     private void waitOnStoryObject() {
-        while (mStoryObject == null) {
-            Log.e("Nulled", "Story object is null. Waiting for callback");
+        if (mStoryObject == null) {
+            Toast.makeText(getActivity().getApplicationContext(),
+                    "Please wait for contents to load.",
+                    Toast.LENGTH_SHORT).show();
+            return;
         }
     }
 
@@ -164,22 +167,13 @@ public class ReadWriteStoryFragment extends Fragment {
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //waitOnStoryObject();
-
-                if (mStoryObject == null) {
-                    Toast.makeText(getActivity().getApplicationContext(),
-                            "Please wait for contents to load.",
-                            Toast.LENGTH_SHORT).show();
-                    Log.v("poop", "poopoopoop");
-                    return;
-                }
+                waitOnStoryObject();
 
                 UserData userData = null;
 
                 user = ParseUser.getCurrentUser();
 
                 try {
-                    Log.v("derp", "Hello " + (String) mStoryObject.getUser().fetchIfNeeded().get("userdata"));
                     userData = Utility.getUserData((String) mStoryObject.getUser().fetchIfNeeded().get("userdata"));
                 }
                 catch (ParseException e) {
@@ -224,17 +218,41 @@ public class ReadWriteStoryFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                //waitOnStoryObject();
+                waitOnStoryObject();
 
-                if (!((ArrayList<ParseUser>) mStoryObject.getUser().get("subscribers")).contains(user)) {
-                    //mStoryObject.getUser().add("subscribers", user); This won't work yet
+                UserData userData = null;
+
+                user = ParseUser.getCurrentUser();
+
+                try {
+                    userData = Utility.getUserData((String) mStoryObject.getUser().fetchIfNeeded().get("userdata"));
+
+                    if (!user.equals(mStoryObject.getUser())) {
+                        Toast.makeText(getActivity().getApplicationContext(),
+                                "You can't subscribe to yourself!",
+                                Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (!(userData.getSubscribers().contains(user))) {
+                        //mStoryObject.getUser().add("subscribers", user); This won't work yet
+                        userData.addSubscriber(user);
+                    }
+                    if (!((ArrayList<StoryTree>) user.fetchIfNeeded().get("subscriptions")).contains(mStoryObject.getTree())){
+                        user.add("subscriptions", mStoryObject.getTree());
+                    }
+
+                    user.saveInBackground();
+                    userData.saveInBackground();
+
+                    //Error handling in the method.
+//                    ((StoryTree) mStoryObject.getTree()).addSubscriber(user);
                 }
-                if (!((ArrayList<StoryTree>) user.get("subscriptions")).contains(mStoryObject.getTree())){
-                    user.add("subscriptions", mStoryObject.getTree());
+                catch (ParseException e) {
+
                 }
 
-                //Error handling in the method.
-                ((StoryTree) mStoryObject.getTree()).addSubscriber(user);
+
 
 
             }

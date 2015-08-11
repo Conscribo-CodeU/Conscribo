@@ -2,6 +2,7 @@ package com.codeu.app.conscribo;
 
 import com.codeu.app.conscribo.data.StoryObject;
 import com.codeu.app.conscribo.data.StoryTree;
+import com.codeu.app.conscribo.data.UserData;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -17,6 +18,7 @@ public class Application extends android.app.Application {
 
         ParseObject.registerSubclass(StoryObject.class);
         ParseObject.registerSubclass(StoryTree.class);
+        ParseObject.registerSubclass(UserData.class);
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "z4QO1lQCmgjdEpwOEoR9oEXD7hS1O74IFjViof37",
                 "rUGcNQi5Vu622hBn6Ft845H5Ghj6JObB3nj5z18v");

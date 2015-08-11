@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.codeu.app.conscribo.data.StoryObject;
 import com.codeu.app.conscribo.data.StoryTree;
+import com.codeu.app.conscribo.data.UserData;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -68,8 +69,6 @@ public class ReadWriteStoryFragment extends Fragment {
         // Retrieve the share menu item
         MenuItem menuItem = menu.findItem(R.id.action_share);
 
-        user = ParseUser.getCurrentUser();
-
         // Get the provider and hold onto it to set/change the share intent.
         ShareActionProvider mShareActionProvider =
                 (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
@@ -100,6 +99,8 @@ public class ReadWriteStoryFragment extends Fragment {
 
         hasUser = Utility.userLoggedIn();
 
+        user = ParseUser.getCurrentUser();
+
         View rootView = inflater.inflate(R.layout.fragment_read_write_story, container, false);
 
         // Retrieve intent and check if there is a Story ID
@@ -123,8 +124,9 @@ public class ReadWriteStoryFragment extends Fragment {
             query.getFirstInBackground(new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject parseObject, ParseException e) {
-                    if (mStoryObject == null && e == null) {
 
+                    if (e == null) {
+                        mStoryObject = (StoryObject) parseObject;
                         // Set all textViews based on StoryObject
                         setStoryViews((StoryObject) parseObject);
                     } else {
@@ -143,6 +145,12 @@ public class ReadWriteStoryFragment extends Fragment {
         return rootView;
     }
 
+    private void waitOnStoryObject() {
+        while (mStoryObject == null) {
+            Log.e("Nulled", "Story object is null. Waiting for callback");
+        }
+    }
+
     /*
      *  Set all the onClickListeners for the buttons and views
      */
@@ -156,14 +164,48 @@ public class ReadWriteStoryFragment extends Fragment {
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!((ArrayList<StoryObject>) user.get("liked")).contains(mStoryObject)) { //&& !user.equals(mStoryObject.getUser())) { //mStoryObject.getUser is what is crashing the app
+                //waitOnStoryObject();
+
+                if (mStoryObject == null) {
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Please wait for contents to load.",
+                            Toast.LENGTH_SHORT).show();
+                    Log.v("poop", "poopoopoop");
+                    return;
+                }
+
+                UserData userData = null;
+
+                user = ParseUser.getCurrentUser();
+
+                try {
+                    Log.v("derp", "Hello " + (String) mStoryObject.getUser().fetchIfNeeded().get("userdata"));
+                    userData = Utility.getUserData((String) mStoryObject.getUser().fetchIfNeeded().get("userdata"));
+                }
+                catch (ParseException e) {
+
+                }
+
+                if (!((ArrayList<StoryObject>) user.get("liked")).contains(mStoryObject) && !user.equals(mStoryObject.getUser())) { //mStoryObject.getUser is what is crashing the app
 
                     for (StoryObject item: (ArrayList<StoryObject>) user.get("liked")) {
                         Log.v("TESTING", item.getTitle());
                     }
 
                     //int numLikes = mStoryObject.getUser().getInt("likes") + 1;
-                    mStoryObject.getUser().increment("likes"); //Need to delete the other stories. ALso need to test if this affects all author's likes
+                    if (mStoryObject == null) {
+                        Log.e("Nulled", "Wtf");
+                    }
+                    if (mStoryObject.getUser() == null) {
+                        Log.e("Nulled", "User is null");
+                    }
+                    else {
+                        Log.e("Nulled", "User is not null");
+                    }
+
+                    //mStoryObject.getUser().increment("likes"); //Need to delete the other stories. ALso need to test if this affects all author's likes
+                    userData.addLike();
+
                     mStoryObject.addLike();
                     user.add("liked", mStoryObject);
 
@@ -172,6 +214,8 @@ public class ReadWriteStoryFragment extends Fragment {
                     likes.setText(mStoryObject.getLikes() + " likes");
 
                     user.saveInBackground();
+                    userData.saveInBackground();
+
                 }
             }
         });
@@ -179,15 +223,18 @@ public class ReadWriteStoryFragment extends Fragment {
         subcribeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //waitOnStoryObject();
+
                 if (!((ArrayList<ParseUser>) mStoryObject.getUser().get("subscribers")).contains(user)) {
-                    mStoryObject.getUser().add("subscribers", user);
+                    //mStoryObject.getUser().add("subscribers", user); This won't work yet
                 }
                 if (!((ArrayList<StoryTree>) user.get("subscriptions")).contains(mStoryObject.getTree())){
                     user.add("subscriptions", mStoryObject.getTree());
                 }
 
                 //Error handling in the method.
-                //((StoryTree) mStoryObject.getTree()).addSubscriber(user);
+                ((StoryTree) mStoryObject.getTree()).addSubscriber(user);
 
 
             }

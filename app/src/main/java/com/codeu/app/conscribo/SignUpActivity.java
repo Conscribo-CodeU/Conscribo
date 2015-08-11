@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.codeu.app.conscribo.data.StoryObject;
 import com.codeu.app.conscribo.data.StoryTree;
+import com.codeu.app.conscribo.data.UserData;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -81,12 +82,23 @@ public class SignUpActivity extends ActionBarActivity {
         user.setPassword(password);
 
         /* Initialize User Data */
+        UserData userData = new UserData();
+        userData.makeData(0, new ArrayList<ParseUser>());
+
+        try {
+            userData.save();
+        }
+        catch (ParseException e)
+        {
+
+        }
+
+        /* Initialize User */
         user.put("contributions", new ArrayList<StoryObject>());
-        user.put("likes", 0);
         user.put("liked", new ArrayList<StoryObject>());
-        user.put("favorites", new ArrayList<StoryObject>());
-        user.put("subscribers", new ArrayList<ParseUser>());
         user.put("subscriptions", new ArrayList<StoryTree>());
+        user.put("userdata" , userData.getObjectId());
+
 
         user.saveInBackground();
 

@@ -2,6 +2,10 @@ package com.codeu.app.conscribo;
 
 import android.util.Log;
 
+import com.codeu.app.conscribo.data.UserData;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONArray;
@@ -111,5 +115,18 @@ public class Utility {
 
     public static boolean userLoggedIn() {
         return ParseUser.getCurrentUser() != null;
+    }
+
+    public static UserData getUserData(String objectId) {
+        UserData retrieved = null;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("UserData");
+        try {
+            retrieved = (UserData) query.get(objectId);
+        }
+        catch (ParseException e) {
+
+        }
+
+        return retrieved;
     }
 }

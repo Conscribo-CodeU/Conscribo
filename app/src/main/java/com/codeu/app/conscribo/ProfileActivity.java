@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.codeu.app.conscribo.data.StoryObject;
 import com.codeu.app.conscribo.data.StoryTree;
+import com.codeu.app.conscribo.data.UserData;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -36,9 +37,12 @@ public class ProfileActivity extends AppCompatActivity {
         ArrayList<StoryTree> subscriptions = (ArrayList<StoryTree>) user.get("subscriptions");
 
         username.setText(user.getUsername());
-        numLikes.setText(user.get("likes") + " Likes");
-        numFavorites.setText(((ArrayList<StoryObject>) user.get("favorites")).size() + " Favorites");
-        numSubscribers.setText(((ArrayList<StoryObject>) user.get("subscribers")).size() + " Subscribers");
+
+        UserData userData = Utility.getUserData((String) user.get("userdata"));
+
+        numLikes.setText(userData.getLikes() + " Likes");
+        //numFavorites.setText(((ArrayList<StoryObject>) user.get("favorites")).size() + " Favorites");
+        numSubscribers.setText(userData.getSubscribers().size() + " Subscribers");
 
     }
 

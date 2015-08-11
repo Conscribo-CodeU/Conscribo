@@ -97,7 +97,7 @@ public class StoryObject extends ParseObject implements Serializable {
     public ParseObject getTree() {
         return getParseObject("tree");
     }
-    public ParseUser getUser() {return getParseUser("user");}
+    public ParseUser getUser() {return (ParseUser) get("user");}
     public JSONArray getSentencesJSONArray() {
         return getJSONArray("listSentences");
     }

@@ -41,7 +41,7 @@ public class ReadWriteStoryFragment extends Fragment {
 
     private String mStoryId;
     private StoryObject mStoryObject;
-    private static String mStoryText;
+    private String mStoryText;
     private ParseUser user;
 
     private final String LOGTAG = ReadWriteStoryFragment.class.getSimpleName();
@@ -58,6 +58,12 @@ public class ReadWriteStoryFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.read_write_menu, menu);
+
+        // Retreive EXTRA_TEXT from intent which contains the story sentences
+        Intent intent = getActivity().getIntent();
+        if(intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
+            mStoryText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        }
 
         // Retrieve the share menu item
         MenuItem menuItem = menu.findItem(R.id.action_share);
@@ -78,6 +84,7 @@ public class ReadWriteStoryFragment extends Fragment {
     }
 
     private Intent createShareStoryIntent(){
+
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         shareIntent.setType("text/plain");
@@ -140,20 +147,11 @@ public class ReadWriteStoryFragment extends Fragment {
      *  Set all the onClickListeners for the buttons and views
      */
     private void createOnClickListeners(View rootView) {
-        ImageButton infoButton = (ImageButton)      rootView.findViewById(R.id.rw_info_button);
         ImageButton likeButton = (ImageButton)      rootView.findViewById(R.id.rw_like_button);
         ImageButton subcribeButton = (ImageButton)  rootView.findViewById(R.id.rw_suscribe_button);
         ImageButton treeButton = (ImageButton)      rootView.findViewById(R.id.rw_tree_button);
         ImageButton writeButton = (ImageButton)     rootView.findViewById(R.id.rw_write_button);
         Button submitButton = (Button)              rootView.findViewById(R.id.rw_sentence_submit);
-
-        infoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Send story info through the Intent to the StoryInfoActivity
-                Intent i = new Intent();
-            }
-        });
 
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,6 +166,10 @@ public class ReadWriteStoryFragment extends Fragment {
                     mStoryObject.getUser().increment("likes"); //Need to delete the other stories. ALso need to test if this affects all author's likes
                     mStoryObject.addLike();
                     user.add("liked", mStoryObject);
+
+                    // Also increment likes in the TextView
+                    TextView likes = (TextView) getActivity().findViewById(R.id.rw_likes);
+                    likes.setText(mStoryObject.getLikes() + " likes");
 
                     user.saveInBackground();
                 }
@@ -303,17 +305,17 @@ public class ReadWriteStoryFragment extends Fragment {
         TextView authorText = (TextView) getActivity().findViewById(R.id.rw_author_text);
         ImageView storyImage = (ImageView) getActivity().findViewById(R.id.rw_story_image);
         TextView sentencesText = (TextView) getActivity().findViewById(R.id.rw_sentences_text);
+        TextView likesText = (TextView) getActivity().findViewById(R.id.rw_likes);
 
         // Save the story so it can be shared
 
-        mStoryText = Utility.generateStringFromJSONArray(story.getSentencesJSONArray());
-
-        Log.e(LOGTAG, "Set mStoryText to: " + mStoryText);
+        String storyText = Utility.generateStringFromJSONArray(story.getSentencesJSONArray());
 
         titleText.setText(story.getTitle());
         authorText.setText(Utility.getLastStringFromJSONArray(story.getAuthorsJSONArray()) );
         storyImage.setImageResource(Utility.findGenreDrawable( story.getGenre()));
-        sentencesText.setText(mStoryText);
+        sentencesText.setText(storyText);
+        likesText.setText(story.getLikes() + " likes");
     }
 
 

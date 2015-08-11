@@ -1,9 +1,11 @@
 package com.codeu.app.conscribo;
 
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -25,6 +27,7 @@ import com.parse.ParseUser;
 import java.util.List;
 
 
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class MainDashboard extends ActionBarActivity implements ActionBar.TabListener {
 
     private ListView mListView;
@@ -79,6 +82,8 @@ public class MainDashboard extends ActionBarActivity implements ActionBar.TabLis
                 if (mSelectedStory != null) {
                     Intent i = new Intent(self, ReadWriteStoryActivity.class);
                     i.putExtra("selectedStoryId", mSelectedStory.getObjectId());
+                    i.putExtra(Intent.EXTRA_TEXT,
+                            Utility.generateStringFromJSONArray(mSelectedStory.getSentencesJSONArray()));
                     startActivity(i);
                 } else {
                     // Tell user to select a story first

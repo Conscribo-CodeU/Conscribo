@@ -57,11 +57,6 @@
                 android:value="com.codeu.app.conscribo.MainDashboard" />
         </activity>
         <activity
-            android:name=".StoryInfoActivity"
-            android:parentActivityName=".ReadWriteStoryActivity" >
-            android:label="@string/title_activity_story_info" >
-        </activity>
-        <activity
             android:name=".TreeBranchActivity"
             android:label="@string/title_activity_tree_branch" >
         </activity>

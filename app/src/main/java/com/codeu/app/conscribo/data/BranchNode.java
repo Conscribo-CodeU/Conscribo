@@ -68,4 +68,7 @@ public class BranchNode {
     public ParseUser getUser() {
         return this.user;
     }
+    public int getLikes(){
+        return story.getLikes();
+    }
 }

@@ -17,7 +17,8 @@
         android:textSize="34dp"
         android:gravity="center_horizontal"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/accent_material_light" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -85,7 +86,7 @@
         android:layout_height="wrap_content"
         android:text="Login"
         android:id="@+id/login_button"
-        android:background="#ff0cd500"
+        android:background="#6bd579"
         android:textColor="#ffffff"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />

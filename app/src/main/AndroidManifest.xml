@@ -41,10 +41,6 @@
             android:parentActivityName=".MainDashboard" >
         </activity>
         <activity
-            android:name=".ParseLoginActivity"
-            android:label="@string/title_activity_parse_login" >
-        </activity>
-        <activity
             android:name=".CreateStoryActivity"
             android:label="@string/title_activity_create_story"
             android:parentActivityName=".MainDashboard" >

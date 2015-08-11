@@ -76,7 +76,7 @@
         android:text="Register"
         android:id="@+id/register_button"
         android:textColor="#fffafbff"
-        android:background="#ff0cd500"
+        android:background="#6bd579"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 

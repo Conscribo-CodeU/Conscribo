@@ -13,7 +13,10 @@
         android:gravity="center_horizontal"
         android:text="@string/read_button"
         android:id="@+id/read_branch_button"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:background="#6bd579"
+        android:textColor="#FFFFFF"
+        android:textAlignment="center" />
 
     <ListView
         android:id="@+id/branches_list"

@@ -17,7 +17,8 @@
         android:gravity="center_horizontal"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="51dp" />
+        android:layout_marginTop="51dp"
+        android:textColor="@color/accent_material_light" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -91,7 +92,7 @@
         android:layout_below="@+id/login_password_edit_text"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="42dp"
-        android:background="#ff0cd500"
+        android:background="#6bd579"
         android:textColor="#ffffff" />
 
 </RelativeLayout>

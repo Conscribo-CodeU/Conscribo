@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -15,13 +18,15 @@ import com.codeu.app.conscribo.data.UserData;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseQueryAdapter;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    ParseUser user;
+    private ParseUser mUser;
+    private ParseQueryAdapter<StoryObject> mParseQueryAdapter;
 
     private final String LOGTAG = ProfileActivity.class.getSimpleName();
 
@@ -30,9 +35,6 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        user = ParseUser.getCurrentUser();
-
-        UserData userData = Utility.getUserData((String) user.get("userdata"));
 
         // Retrieve intent and check if there is a userObjectId if null display currentUser
         Intent i = getIntent();
@@ -45,50 +47,59 @@ public class ProfileActivity extends AppCompatActivity {
             userQuery.whereEqualTo("objectId", userId);
 
             userQuery.getFirstInBackground(new GetCallback<ParseUser>() {
-                    @Override
-                    public void done(ParseUser parseUser, ParseException e) {
+                @Override
+                public void done(ParseUser parseUser, ParseException e) {
 
-                        UserData userData = Utility.getUserData((String) parseUser.get("userdata"));
+                    UserData userData = Utility.getUserData((String) parseUser.get("userdata"));
 
-                        if(e == null) {
-                            TextView username = (TextView) findViewById(R.id.profile_username);
-                            TextView numLikes = (TextView) findViewById(R.id.profile_likes);
-                            //TextView numFavorites = (TextView) findViewById(R.id.profile_favorites);
-                            TextView numSubscribers = (TextView) findViewById(R.id.profile_subscribers);
+                    if (e == null) {
+                        TextView username =         (TextView) findViewById(R.id.profile_username);
+                        TextView numLikes =         (TextView) findViewById(R.id.profile_likes);
+                        //TextView numFavorites =   (TextView) findViewById(R.id.profile_favorites);
+                        TextView numSubscribers =   (TextView) findViewById(R.id.profile_subscribers);
+                        TextView changePassword =   (TextView) findViewById(R.id.change_password_textview);
+                        ListView selectedList =     (ListView) findViewById(R.id.profile_listview);
 
-                            ListView selectedList = (ListView) findViewById(R.id.profile_list);
+                        ArrayList<StoryObject> contributions = (ArrayList<StoryObject>) parseUser.get("contributions");
+                        ArrayList<StoryTree> subscriptions = (ArrayList<StoryTree>) parseUser.get("subscriptions");
 
-                            ArrayList<StoryObject> contributions = (ArrayList<StoryObject>) parseUser.get("contributions");
-                            ArrayList<StoryTree> subscriptions = (ArrayList<StoryTree>) parseUser.get("subscriptions");
+                        username.setText(parseUser.getUsername());
+                        numLikes.setText(userData.getLikes() + " Likes");
+                        numSubscribers.setText(userData.getSubscribers().size() + " Subscribers");
+                        changePassword.setVisibility(TextView.INVISIBLE);
 
-                            username.setText(parseUser.getUsername());
-                            numLikes.setText(userData.getLikes() + " Likes");
-                            numSubscribers.setText(userData.getSubscribers().size() + " Subscribers");
-
-                        } else {
-                            e.printStackTrace();
-                            Log.e(LOGTAG, "Couldn't retrieve ParseUser with userId");
-                        }
+                    } else {
+                        e.printStackTrace();
+                        Log.e(LOGTAG, "Couldn't retrieve ParseUser with userId");
                     }
-                });
-            } else {
 
-            user = ParseUser.getCurrentUser();
+                    createContributionsQueryAdapter(parseUser);
+
+                }
+                });
+
+        } else {
+
+            mUser = ParseUser.getCurrentUser();
+
+            UserData userData = Utility.getUserData((String) mUser.get("userdata"));
 
             TextView username = (TextView) findViewById(R.id.profile_username);
             TextView numLikes = (TextView) findViewById(R.id.profile_likes);
-            TextView numFavorites = (TextView) findViewById(R.id.profile_favorites);
+//            TextView numFavorites = (TextView) findViewById(R.id.profile_favorites);
             TextView numSubscribers = (TextView) findViewById(R.id.profile_subscribers);
 
             ListView selectedList = (ListView) findViewById(R.id.profile_list);
 
-            ArrayList<StoryObject> contributions = (ArrayList<StoryObject>) user.get("contributions");
-            ArrayList<StoryTree> subscriptions = (ArrayList<StoryTree>) user.get("subscriptions");
+            ArrayList<StoryObject> contributions = (ArrayList<StoryObject>) mUser.get("contributions");
+            ArrayList<StoryTree> subscriptions = (ArrayList<StoryTree>) mUser.get("subscriptions");
 
-            username.setText(user.getUsername());
+            username.setText(mUser.getUsername());
             numLikes.setText(userData.getLikes() + " Likes");
-            //numFavorites.setText(((ArrayList<StoryObject>) user.get("favorites")).size() + " Favorites");
+            //numFavorites.setText(((ArrayList<StoryObject>) mUser.get("favorites")).size() + " Favorites");
             numSubscribers.setText(userData.getSubscribers().size() + " Subscribers");
+
+            createContributionsQueryAdapter(mUser);
         }
     }
 
@@ -98,6 +109,14 @@ public class ProfileActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_logged_in_main, menu);
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(mParseQueryAdapter != null) {
+            mParseQueryAdapter.loadObjects();
+        }
     }
 
     @Override
@@ -129,5 +148,53 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private void createContributionsQueryAdapter(final ParseUser parseUser) {
+        ListView lv = (ListView) findViewById(R.id.profile_listview);
+
+        ParseQueryAdapter.QueryFactory<StoryObject> factoryContributions =
+                new ParseQueryAdapter.QueryFactory<StoryObject>() {
+                    public ParseQuery<StoryObject> create() {
+
+                        ParseQuery<StoryObject> query = StoryObject.getQuery();
+                        query.whereEqualTo("user", parseUser);
+                        return query;
+                    }
+                };
+
+        mParseQueryAdapter = new ParseQueryAdapter<StoryObject>(this, factoryContributions) {
+            @Override
+            public View getItemView(StoryObject story, View view, ViewGroup parent) {
+                if (view == null) {
+                    view = View.inflate(getContext(), R.layout.main_story_list_item, null);
+                }
+
+                //Find all relevant views
+                TextView titleView = (TextView)     view.findViewById( R.id.list_story_title);
+                TextView authorView = (TextView)    view.findViewById( R.id.list_story_author);
+                TextView likesView = (TextView)     view.findViewById( R.id.list_story_likes);
+                ImageView genreImage = (ImageView)  view.findViewById( R.id.list_story_image);
+                TextView blurb = (TextView)         view.findViewById( R.id.list_story_blurb);
+
+                //  Set the content based on the story
+                titleView.setText(story.getTitle());
+                authorView.setText( Utility.getLastStringFromJSONArray(story.getAuthorsJSONArray()));
+                likesView.setText(Integer.toString(story.getLikes()) +  " likes" );
+                genreImage.setImageResource( Utility.findGenreDrawable( story.getGenre() ) );
+                blurb.setText( Utility.generateStringFromJSONArray(story.getSentencesJSONArray()));
+
+                return view;
+            }
+        };
+
+        mParseQueryAdapter.setAutoload(false);
+        mParseQueryAdapter.setPaginationEnabled(false);
+
+        lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        lv.setAdapter(mParseQueryAdapter);
+
+        mParseQueryAdapter.loadObjects();
     }
 }

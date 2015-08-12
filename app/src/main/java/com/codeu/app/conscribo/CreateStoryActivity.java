@@ -168,7 +168,7 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
                     // ***NOTE: Saving the StoryObject will save both the StoryObject and StoryTree.
                     story.saveInBackground();
 
-                    //Adds to the user's contributions to be pulled from the profile page.
+                    //Adds to the mUser's contributions to be pulled from the profile page.
                     user.add("contributions", story);
 
                     /*
@@ -222,7 +222,7 @@ public class CreateStoryActivity extends ActionBarActivity implements AdapterVie
     }
 
     public boolean isValidStorySubmission() {
-        //Safety check for making sure user is logged in
+        //Safety check for making sure mUser is logged in
         if (ParseUser.getCurrentUser() == null) {
             return false;
         }

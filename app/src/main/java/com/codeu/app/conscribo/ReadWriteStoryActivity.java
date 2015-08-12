@@ -3,9 +3,12 @@ package com.codeu.app.conscribo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.parse.ParseUser;
 
@@ -14,18 +17,35 @@ public class ReadWriteStoryActivity extends ActionBarActivity {
 
     private boolean hasUser;
     private EditText mContributionSentenceEditText;
+    private TextView mCharacterCountText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read_write_story);
 
+        mContributionSentenceEditText = (EditText) findViewById(R.id.rw_setence_input);
+        mCharacterCountText = (TextView) findViewById(R.id.rw_character_count);
+
+        mContributionSentenceEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+            }
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                updateCharacterCountTextViewText();
+            }
+        });
+
     }
 
     private void updateCharacterCountTextViewText(){
         String updatedCharacterCount = String.format("%d/150 characters",
                 mContributionSentenceEditText.getText().toString().length());
-        mContributionSentenceEditText.setText(updatedCharacterCount);
+        mCharacterCountText.setText(updatedCharacterCount);
 
     }
 

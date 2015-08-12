@@ -84,7 +84,7 @@ public class SignUpActivity extends ActionBarActivity {
             return;
         }
 
-        // Set up a new Parse user
+        // Set up a new Parse mUser
         ParseUser user = new ParseUser();
         user.setUsername(username);
         user.setPassword(password);

@@ -100,7 +100,7 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="221dp"
-            android:id="@+id/profile_list"
+            android:id="@+id/profile_listview"
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.83" />
 
@@ -109,7 +109,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Change Password Here"
-            android:id="@+id/textView14"
+            android:id="@+id/change_password_textview"
             android:layout_gravity="center_horizontal" />
 
     </LinearLayout>

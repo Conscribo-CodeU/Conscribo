@@ -272,6 +272,14 @@ public class ReadWriteStoryFragment extends Fragment {
         treeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (mStoryObject == null) {
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Please wait for contents to load.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 // Create intent to start TreeBranchActivity
                 // Provide treeId in the intent.
                 String treeId = mStoryObject.getTree().getObjectId();

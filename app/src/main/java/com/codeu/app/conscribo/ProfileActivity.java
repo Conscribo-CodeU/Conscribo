@@ -30,6 +30,8 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        user = ParseUser.getCurrentUser();
+
         UserData userData = Utility.getUserData((String) user.get("userdata"));
 
         // Retrieve intent and check if there is a userObjectId if null display currentUser

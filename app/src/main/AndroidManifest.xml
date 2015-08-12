@@ -49,14 +49,6 @@
                 android:value="com.codeu.app.conscribo.MainDashboard" />
         </activity>
         <activity
-            android:name=".NavigationDrawerActivity"
-            android:label="@string/title_activity_navigation_drawer"
-            android:parentActivityName=".MainDashboard" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.codeu.app.conscribo.MainDashboard" />
-        </activity>
-        <activity
             android:name=".TreeBranchActivity"
             android:label="@string/title_activity_tree_branch" >
         </activity>

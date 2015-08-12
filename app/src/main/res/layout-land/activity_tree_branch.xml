@@ -10,10 +10,12 @@
     <Button
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:text="@string/read_button"
         android:id="@+id/read_branch_button"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:background="#6bd579"
+        android:textColor="#FFFFFF" />
 
     <ListView
         android:id="@+id/branches_list"

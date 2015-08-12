@@ -36,7 +36,7 @@ public class LoginActivity extends ActionBarActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Show a message to the user that we are signing in.
+                // Show a message to the mUser that we are signing in.
                 TextView mStatusTextView = (TextView) findViewById(R.id.signInTextView);
                 mStatusTextView.setText("Signing in...");
 

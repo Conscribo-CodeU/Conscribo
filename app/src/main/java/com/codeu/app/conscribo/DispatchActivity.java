@@ -15,7 +15,7 @@ public class DispatchActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        // Check if there is current user info
+        // Check if there is current mUser info
         if (ParseUser.getCurrentUser() != null) {
             // Start an intent for the logged in activity
             startActivity(new Intent(this, MainDashboard.class));

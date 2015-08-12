@@ -74,7 +74,7 @@ public class ReadWriteStoryFragment extends Fragment {
                 (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
 
         // Attach an intent to this ShareActionProvider.  You can update this at any time,
-        // like when the user selects a new piece of data they might like to share.
+        // like when the mUser selects a new piece of data they might like to share.
         if (mShareActionProvider != null ) {
             mShareActionProvider.setShareIntent(createShareStoryIntent());
         } else {
@@ -145,6 +145,7 @@ public class ReadWriteStoryFragment extends Fragment {
         return rootView;
     }
 
+    //TODO: This is buggy. It will only return the current method waitOnStoryObject().
     private void waitOnStoryObject() {
         if (mStoryObject == null) {
             Toast.makeText(getActivity().getApplicationContext(),
@@ -236,7 +237,7 @@ public class ReadWriteStoryFragment extends Fragment {
                     }
 
                     if (!(userData.getSubscribers().contains(user))) {
-                        //mStoryObject.getUser().add("subscribers", user); This won't work yet
+                        //mStoryObject.getUser().add("subscribers", mUser); This won't work yet
                         userData.addSubscriber(user);
                     }
                     if (!((ArrayList<StoryTree>) user.fetchIfNeeded().get("subscriptions")).contains(mStoryObject.getTree())){
@@ -247,7 +248,7 @@ public class ReadWriteStoryFragment extends Fragment {
                     userData.saveInBackground();
 
                     //Error handling in the method.
-//                    ((StoryTree) mStoryObject.getTree()).addSubscriber(user);
+//                    ((StoryTree) mStoryObject.getTree()).addSubscriber(mUser);
                 }
                 catch (ParseException e) {
 
@@ -364,11 +365,11 @@ public class ReadWriteStoryFragment extends Fragment {
             public void onClick(View v) {
                 if(mStoryObject != null) {
 
+                    Log.e(LOGTAG, "Starting profile activity");
                     // Start ProfileActivity
                     Intent profileIntent = new Intent(getActivity(), ProfileActivity.class);
                     profileIntent.putExtra("userObjectId", mStoryObject.getUser().getObjectId());
                     startActivity(profileIntent);
-
 
                 }
 
@@ -396,6 +397,4 @@ public class ReadWriteStoryFragment extends Fragment {
         sentencesText.setText(storyText);
         likesText.setText(story.getLikes() + " likes");
     }
-
-
 }

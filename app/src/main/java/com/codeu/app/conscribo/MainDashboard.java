@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,12 +36,13 @@ public class MainDashboard extends ActionBarActivity implements ActionBar.TabLis
     private ParseQueryAdapter<StoryObject> mParseQueryAdapter;
 
     private StoryObject mSelectedStory;
+    private List<StoryObject> mListStories;
 
     private Activity self;
 
     final private String LOGTAG = MainDashboard.class.getSimpleName();
 
-    //Static variable to maintain that the user is logged in throughout all new calls to MainDashboard
+    //Static variable to maintain that the mUser is logged in throughout all new calls to MainDashboard
     private static boolean hasUser = false;
 
     @Override
@@ -72,7 +74,6 @@ public class MainDashboard extends ActionBarActivity implements ActionBar.TabLis
             }
         });
 
-        // Set up temporary buttons
         Button tempReadStoryButton = (Button) findViewById(R.id.read_story_button);
         tempReadStoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +87,7 @@ public class MainDashboard extends ActionBarActivity implements ActionBar.TabLis
                             Utility.generateStringFromJSONArray(mSelectedStory.getSentencesJSONArray()));
                     startActivity(i);
                 } else {
-                    // Tell user to select a story first
+                    // Tell mUser to select a story first
                     Toast.makeText(getApplicationContext(),
                             "Please select a story",
                             Toast.LENGTH_SHORT).show();
@@ -103,7 +104,7 @@ public class MainDashboard extends ActionBarActivity implements ActionBar.TabLis
                     startActivity(new Intent(self, CreateStoryActivity.class));
                 }
                 else {
-                    //Cannot do action until user is logged in.
+                    //Cannot do action until mUser is logged in.
                     Toast.makeText(getApplicationContext(),
                             "Please login before creating a new story",
                             Toast.LENGTH_SHORT).show();
@@ -115,8 +116,23 @@ public class MainDashboard extends ActionBarActivity implements ActionBar.TabLis
         tempDiscoverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Query random story and send intent to ReadWriteStoryActivity
 
+                // Get random story from queryAdapter and send intent to ReadWriteStoryActivity
+                StoryObject randomStory = mParseQueryAdapter.getItem(
+                        (int) (mParseQueryAdapter.getCount() * Math.random()) );
+
+                if (randomStory != null) {
+                    Intent i = new Intent(self, ReadWriteStoryActivity.class);
+                    i.putExtra("selectedStoryId", randomStory.getObjectId());
+                    i.putExtra(Intent.EXTRA_TEXT,
+                            Utility.generateStringFromJSONArray(randomStory.getSentencesJSONArray()));
+                    startActivity(i);
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "Sorry! Try discover again!",
+                            Toast.LENGTH_SHORT).show();
+                    Log.e(LOGTAG, "randomStory was null.");
+                }
             }
         });
 

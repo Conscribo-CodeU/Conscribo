@@ -24,8 +24,10 @@
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/imageButton"
-                android:layout_weight="0.35" />
+                android:id="@+id/profile_image"
+                android:layout_weight="0.35"
+                android:background="@null"
+                android:src="@drawable/conscribo_profile_icon" />
 
             <LinearLayout
                 android:orientation="vertical"
@@ -92,7 +94,7 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="79dp"
-            android:id="@+id/profile_list"
+            android:id="@+id/profile_listview"
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.77" />
 
@@ -101,7 +103,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Change Password Here"
-            android:id="@+id/textView14"
+            android:id="@+id/change_password_textview"
             android:layout_gravity="center_horizontal" />
 
     </LinearLayout>

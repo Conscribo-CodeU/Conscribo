@@ -65,7 +65,9 @@ public class ProfileActivity extends AppCompatActivity {
                         username.setText(parseUser.getUsername());
                         numLikes.setText(userData.getLikes() + " Likes");
                         numSubscribers.setText(userData.getSubscribers().size() + " Subscribers");
-                        changePassword.setVisibility(TextView.INVISIBLE);
+                        if(changePassword != null) {
+                            changePassword.setVisibility(TextView.INVISIBLE);
+                        }
 
                     } else {
                         e.printStackTrace();
@@ -88,7 +90,7 @@ public class ProfileActivity extends AppCompatActivity {
 //            TextView numFavorites = (TextView) findViewById(R.id.profile_favorites);
             TextView numSubscribers = (TextView) findViewById(R.id.profile_subscribers);
 
-            ListView selectedList = (ListView) findViewById(R.id.profile_list);
+            ListView selectedList = (ListView) findViewById(R.id.profile_listview);
 
             ArrayList<StoryObject> contributions = (ArrayList<StoryObject>) mUser.get("contributions");
             ArrayList<StoryTree> subscriptions = (ArrayList<StoryTree>) mUser.get("subscriptions");

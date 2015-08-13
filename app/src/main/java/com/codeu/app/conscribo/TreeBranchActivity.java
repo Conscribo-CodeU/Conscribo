@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codeu.app.conscribo.data.BranchNode;
@@ -82,6 +83,7 @@ public class TreeBranchActivity extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.branches_list);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -158,6 +160,10 @@ public class TreeBranchActivity extends AppCompatActivity {
         HashMap<String, BranchNode> parentBranchNodeLookup = new HashMap<String, BranchNode >();
         mRootBranchNode = new BranchNode(branchesList.get(0));
         parentBranchNodeLookup.put(mRootBranchNode.generateKey(), mRootBranchNode);
+
+        TextView storyTitle = (TextView) findViewById(R.id.tree_story_title);
+        storyTitle.setText(mRootBranchNode.getStory().getTitle());
+
 
         // Iterate through the rest of the branchesList and place them after their parent BranchNode
         for(int i = 1; i < branchesList.size(); i++) {

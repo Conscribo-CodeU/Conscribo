@@ -169,7 +169,20 @@ public class ReadWriteStoryFragment extends Fragment {
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                waitOnStoryObject();
+
+                if (user == null) {
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Please login first.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (mStoryObject == null) {
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Please wait for contents to load.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 UserData userData = null;
 
@@ -220,7 +233,19 @@ public class ReadWriteStoryFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                waitOnStoryObject();
+                if (user == null) {
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Please login first.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (mStoryObject == null) {
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Please wait for contents to load.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 UserData userData = null;
 
@@ -262,6 +287,14 @@ public class ReadWriteStoryFragment extends Fragment {
         treeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (mStoryObject == null) {
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Please wait for contents to load.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 // Create intent to start TreeBranchActivity
                 // Provide treeId in the intent.
                 String treeId = mStoryObject.getTree().getObjectId();
@@ -340,7 +373,13 @@ public class ReadWriteStoryFragment extends Fragment {
                                     ParseUser.getCurrentUser());
                             newContributionStory.setTree(mStoryObject.getTree());
 
-                            newContributionStory.saveInBackground();
+                            try {
+                                newContributionStory.save();
+                            }
+                            catch (ParseException e) {
+
+                            }
+
 
                             // Confirm the creation of StoryObject and return to MainDashboard.
                             Toast.makeText(context,

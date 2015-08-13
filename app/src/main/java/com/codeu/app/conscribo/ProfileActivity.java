@@ -35,6 +35,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+
         // Retrieve intent and check if there is a userObjectId if null display currentUser
         Intent i = getIntent();
         Bundle b = i.getExtras();

@@ -51,7 +51,9 @@
             android:layout_height="wrap_content"
             android:text="@string/create"
             android:id="@+id/create_story_submit"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textColor="#FFFFFF"
+            android:background="#6bd579" />
 
     </LinearLayout>
 

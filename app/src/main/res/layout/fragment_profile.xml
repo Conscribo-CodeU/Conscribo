@@ -81,14 +81,20 @@
                 android:layout_height="wrap_content"
                 android:text="Contributions"
                 android:id="@+id/profile_contributions"
-                android:layout_weight="0.5" />
+                android:layout_weight="0.5"
+                android:background="#6bd579"
+                android:textColor="#FFFFFF"
+                android:layout_margin="3dp" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Subscriptions"
                 android:id="@+id/profile_subscriptions"
-                android:layout_weight="0.5" />
+                android:layout_weight="0.5"
+                android:textColor="#FFFFFF"
+                android:background="#6bd579"
+                android:layout_margin="3dp" />
         </LinearLayout>
 
         <ListView

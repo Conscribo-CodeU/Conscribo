@@ -50,11 +50,15 @@ public class ReadWriteStoryActivity extends ActionBarActivity {
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_logged_in_main, menu);
+        if(ParseUser.getCurrentUser() == null){
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.menu_logged_in_main, menu);
+        }
+
         return true;
     }
 

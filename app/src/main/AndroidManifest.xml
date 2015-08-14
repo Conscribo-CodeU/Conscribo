@@ -64,6 +64,13 @@
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile" >
         </activity>
+
+        <provider
+            android:name=".provider.StoryProvider"
+            android:authorities="com.codeu.app.conscribo"
+            android:enabled="true"
+            android:exported="true" >
+        </provider>
     </application>
 
 </manifest>

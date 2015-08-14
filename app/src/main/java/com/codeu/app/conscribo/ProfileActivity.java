@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codeu.app.conscribo.data.StoryObject;
 import com.codeu.app.conscribo.data.StoryTree;
@@ -83,6 +84,11 @@ public class ProfileActivity extends AppCompatActivity {
         } else {
 
             mUser = ParseUser.getCurrentUser();
+
+            if(mUser == null) {
+                Toast.makeText(this, "Sorry you are not logged in properly", Toast.LENGTH_SHORT);
+                finish();
+            }
 
             UserData userData = Utility.getUserData((String) mUser.get("userdata"));
 

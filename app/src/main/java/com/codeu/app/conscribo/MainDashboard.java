@@ -249,10 +249,6 @@ public class MainDashboard extends ActionBarActivity implements ActionBar.TabLis
             startActivity(new Intent(this, LoginActivity.class));
             return true;
         }
-        else if (id == R.id.action_help) {
-            startActivity(new Intent(this, HelpActivity.class));
-            return true;
-        }
         else if (id == R.id.action_refresh) {
             mParseQueryAdapter.loadObjects();
             return true;
